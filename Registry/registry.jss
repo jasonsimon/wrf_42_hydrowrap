@@ -1,0 +1,33 @@
+# jss all of the stuff i've added
+
+rconfig   integer   jss_sfcwrap        namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_atmwrap        namelist,dynamics     1               0    h    "" ""
+
+rconfig   integer   jss_wrapsh		   namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wraplh         namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrapust        namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrapcm         namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wraptsk        namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wraprad        namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrapalbedo     namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrapemiss      namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrap210m       namelist,dynamics     1               0    h    "" ""
+rconfig   integer   jss_wrapvarsfc     namelist,dynamics     1               0    h    "" ""
+
+rconfig   real    jss_debug_r1         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r2         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r3         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r4         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r5         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r6         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r7         namelist,dynamics     1               0    h    "general debugging real" ""
+rconfig   real    jss_debug_r8         namelist,dynamics     1               0    h    "general debugging real" ""
+
+rconfig   integer jss_debug_i1         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i2         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i3         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i4         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i5         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i6         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i7         namelist,dynamics     1               0    h    "general debugging int" ""
+rconfig   integer jss_debug_i8         namelist,dynamics     1               0    h    "general debugging int" ""
