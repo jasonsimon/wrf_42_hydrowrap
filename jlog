@@ -269,7 +269,23 @@ if [ 0 -eq 1 ] ; then \
                                    module_diag_afwa.o module_diag_cl.o module_diag_functions.o module_diag_hailcast.o module_diag_misc.o module_diag_nwp.o module_diag_rasm.o module_diag_pld.o module_diag_zld.o module_diag_trad_fields.o module_diag_solar.o  ; \
                 fi
 make[3]: Entering directory `/home/jss142/wrf_42_hydrowrap/phys'
-make[3]: Nothing to be done for `non_nmm'.
+rm -f module_sf_sfclayrev.o
+sed -e "s/^\!.*'.*//" -e "s/^ *\!.*'.*//" module_sf_sfclayrev.F > module_sf_sfclayrev.G
+/lib/cpp -P -nostdinc -I/home/jss142/wrf_42_hydrowrap/inc -DEM_CORE=1 -DNMM_CORE=0 -DNMM_MAX_DIM=2600 -DDA_CORE=0 -DWRFPLUS=0 -DIWORDSIZE=4 -DDWORDSIZE=8 -DRWORDSIZE=4 -DLWORDSIZE=4 -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM -DNO_IEEE_MODULE -DRPC_TYPES=1  -DDM_PARALLEL -DNETCDF -DLANDREAD_STUB=1 -DUSE_ALLOCATABLES -Dwrfmodel -DGRIB1 -DINTIO -DKEEP_INT_AROUND -DLIMIT_ARGS -DBUILD_RRTMG_FAST=1 -DBUILD_RRTMK=0 -DBUILD_SBM_FAST=1 -DSHOW_ALL_VARS_USED=0 -DCONFIG_BUF_LEN=65536 -DMAX_DOMAINS_F=21 -DMAX_HISTORY=25 -DNMM_NEST=0 -DWRF_HYDRO -I. -traditional-cpp   module_sf_sfclayrev.G  > module_sf_sfclayrev.bb
+/home/jss142/wrf_42_hydrowrap/tools/standard.exe module_sf_sfclayrev.bb | /lib/cpp -P -nostdinc -traditional-cpp > module_sf_sfclayrev.f90
+rm -f module_sf_sfclayrev.G module_sf_sfclayrev.bb
+mpif90 -f90=gfortran -o module_sf_sfclayrev.o -c -O3 -ftree-vectorize -funroll-loops -w -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4   -I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include    module_sf_sfclayrev.f90
+rm -f module_physics_init.o
+/lib/cpp -P -nostdinc -I/home/jss142/wrf_42_hydrowrap/inc -DEM_CORE=1 -DNMM_CORE=0 -DNMM_MAX_DIM=2600 -DDA_CORE=0 -DWRFPLUS=0 -DIWORDSIZE=4 -DDWORDSIZE=8 -DRWORDSIZE=4 -DLWORDSIZE=4 -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM -DNO_IEEE_MODULE -DRPC_TYPES=1  -DDM_PARALLEL -DNETCDF -DLANDREAD_STUB=1 -DUSE_ALLOCATABLES -Dwrfmodel -DGRIB1 -DINTIO -DKEEP_INT_AROUND -DLIMIT_ARGS -DBUILD_RRTMG_FAST=1 -DBUILD_RRTMK=0 -DBUILD_SBM_FAST=1 -DSHOW_ALL_VARS_USED=0 -DCONFIG_BUF_LEN=65536 -DMAX_DOMAINS_F=21 -DMAX_HISTORY=25 -DNMM_NEST=0 -DWRF_HYDRO -I. -traditional-cpp   module_physics_init.F  > module_physics_init.bb
+/home/jss142/wrf_42_hydrowrap/tools/standard.exe module_physics_init.bb | /lib/cpp -P -nostdinc -traditional-cpp > module_physics_init.f90
+rm -f module_physics_init.b module_physics_init.bb
+mpif90 -f90=gfortran -c   -O3 -w -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4  -I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include  module_physics_init.f90
+rm -f module_surface_driver.o
+sed -e "s/^\!.*'.*//" -e "s/^ *\!.*'.*//" module_surface_driver.F > module_surface_driver.G
+/lib/cpp -P -nostdinc -I/home/jss142/wrf_42_hydrowrap/inc -DEM_CORE=1 -DNMM_CORE=0 -DNMM_MAX_DIM=2600 -DDA_CORE=0 -DWRFPLUS=0 -DIWORDSIZE=4 -DDWORDSIZE=8 -DRWORDSIZE=4 -DLWORDSIZE=4 -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM -DNO_IEEE_MODULE -DRPC_TYPES=1  -DDM_PARALLEL -DNETCDF -DLANDREAD_STUB=1 -DUSE_ALLOCATABLES -Dwrfmodel -DGRIB1 -DINTIO -DKEEP_INT_AROUND -DLIMIT_ARGS -DBUILD_RRTMG_FAST=1 -DBUILD_RRTMK=0 -DBUILD_SBM_FAST=1 -DSHOW_ALL_VARS_USED=0 -DCONFIG_BUF_LEN=65536 -DMAX_DOMAINS_F=21 -DMAX_HISTORY=25 -DNMM_NEST=0 -DWRF_HYDRO -I. -traditional-cpp   module_surface_driver.G  > module_surface_driver.bb
+/home/jss142/wrf_42_hydrowrap/tools/standard.exe module_surface_driver.bb | /lib/cpp -P -nostdinc -traditional-cpp > module_surface_driver.f90
+rm -f module_surface_driver.G module_surface_driver.bb
+mpif90 -f90=gfortran -o module_surface_driver.o -c -O3 -ftree-vectorize -funroll-loops -w -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4   -I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include    module_surface_driver.f90
 make[3]: Leaving directory `/home/jss142/wrf_42_hydrowrap/phys'
 make[2]: Leaving directory `/home/jss142/wrf_42_hydrowrap/phys'
 make[1]: Leaving directory `/home/jss142/wrf_42_hydrowrap'
@@ -296,6 +312,12 @@ sed -e "s/^\!.*'.*//" -e "s/^ *\!.*'.*//" solve_em.F > solve_em.G
 /home/jss142/wrf_42_hydrowrap/tools/standard.exe solve_em.bb | /lib/cpp -P -nostdinc -traditional-cpp > solve_em.f90
 rm -f solve_em.G solve_em.bb
 mpif90 -f90=gfortran -o solve_em.o -c -O3 -ftree-vectorize -funroll-loops -w -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4   -I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include    solve_em.f90
+rm -f start_em.o
+sed -e "s/^\!.*'.*//" -e "s/^ *\!.*'.*//" start_em.F > start_em.G
+/lib/cpp -P -nostdinc -I/home/jss142/wrf_42_hydrowrap/inc -DEM_CORE=1 -DNMM_CORE=0 -DNMM_MAX_DIM=2600 -DDA_CORE=0 -DWRFPLUS=0 -DIWORDSIZE=4 -DDWORDSIZE=8 -DRWORDSIZE=4 -DLWORDSIZE=4 -DNONSTANDARD_SYSTEM_SUBR  -DWRF_USE_CLM -DNO_IEEE_MODULE -DRPC_TYPES=1  -DDM_PARALLEL -DNETCDF -DLANDREAD_STUB=1 -DUSE_ALLOCATABLES -Dwrfmodel -DGRIB1 -DINTIO -DKEEP_INT_AROUND -DLIMIT_ARGS -DBUILD_RRTMG_FAST=1 -DBUILD_RRTMK=0 -DBUILD_SBM_FAST=1 -DSHOW_ALL_VARS_USED=0 -DCONFIG_BUF_LEN=65536 -DMAX_DOMAINS_F=21 -DMAX_HISTORY=25 -DNMM_NEST=0 -DWRF_HYDRO -I. -traditional-cpp   start_em.G  > start_em.bb
+/home/jss142/wrf_42_hydrowrap/tools/standard.exe start_em.bb | /lib/cpp -P -nostdinc -traditional-cpp > start_em.f90
+rm -f start_em.G start_em.bb
+mpif90 -f90=gfortran -o start_em.o -c -O3 -ftree-vectorize -funroll-loops -w -ffree-form -ffree-line-length-none -fconvert=big-endian -frecord-marker=4   -I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include    start_em.f90
 ar ru ../main/libwrflib.a module_advect_em.o module_diffusion_em.o module_small_step_em.o module_big_step_utilities_em.o module_em.o module_solvedebug_em.o module_bc_em.o module_init_utilities.o module_wps_io_arw.o module_damping_em.o module_polarfft.o module_force_scm.o module_first_rk_step_part1.o module_first_rk_step_part2.o module_avgflx_em.o module_sfs_nba.o module_convtrans_prep.o module_sfs_driver.o module_stoch.o module_after_all_rk_steps.o  init_modules_em.o solve_em.o start_em.o shift_domain_em.o couple_or_uncouple_em.o nest_init_utils.o adapt_timestep_em.o interp_domain_em.o
 make[2]: Leaving directory `/home/jss142/wrf_42_hydrowrap/dyn_em'
 make[1]: Leaving directory `/home/jss142/wrf_42_hydrowrap'
@@ -369,8 +391,8 @@ make[1]: Leaving directory `/home/jss142/wrf_42_hydrowrap/main'
 if [ 0 -eq 1 ] ; then \
   ( cd main ; make -i -r RLFLAGS="" MODULE_DIRS="-I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include " SOLVER=em em_wrf_SST_ESMF ) ; \
 fi
-build started:   Mon Dec 14 20:46:09 EST 2020
-build completed: Mon Dec 14 20:46:33 EST 2020
+build started:   Tue Dec 15 11:03:37 EST 2020
+build completed: Tue Dec 15 11:04:36 EST 2020
 --------------------------------------
 ( cd main ; make -i -r RLFLAGS="" MODULE_DIRS="-I../dyn_em -I../dyn_nmm  -I/home/jss142/wrf_42_hydrowrap/external/esmf_time_f90  -I/home/jss142/wrf_42_hydrowrap/main -I/home/jss142/wrf_42_hydrowrap/external/io_netcdf -I/home/jss142/wrf_42_hydrowrap/external/io_int -I/home/jss142/wrf_42_hydrowrap/frame -I/home/jss142/wrf_42_hydrowrap/share -I/home/jss142/wrf_42_hydrowrap/phys -I/home/jss142/wrf_42_hydrowrap/wrftladj -I/home/jss142/wrf_42_hydrowrap/chem -I/home/jss142/wrf_42_hydrowrap/inc -I/home/jss142/netcdf_both/include " SOLVER=em IDEAL_CASE=real em_real )
 make[1]: Entering directory `/home/jss142/wrf_42_hydrowrap/main'
@@ -525,15 +547,15 @@ fi
 	/bin/rm -f namelist.input ; cp ../test/em_real/namelist.input . )
  
 ==========================================================================
-build started:   Mon Dec 14 20:46:09 EST 2020
-build completed: Mon Dec 14 20:46:36 EST 2020
+build started:   Tue Dec 15 11:03:37 EST 2020
+build completed: Tue Dec 15 11:04:39 EST 2020
  
 --->                  Executables successfully built                  <---
  
--rwxr-xr-x 1 jss142 ldapusers 40633272 Dec 14 20:46 main/ndown.exe
--rwxr-xr-x 1 jss142 ldapusers 40506192 Dec 14 20:46 main/real.exe
--rwxr-xr-x 1 jss142 ldapusers 39990520 Dec 14 20:46 main/tc.exe
--rwxr-xr-x 1 jss142 ldapusers 48107840 Dec 14 20:46 main/wrf.exe
+-rwxr-xr-x 1 jss142 ldapusers 40637368 Dec 15 11:04 main/ndown.exe
+-rwxr-xr-x 1 jss142 ldapusers 40510288 Dec 15 11:04 main/real.exe
+-rwxr-xr-x 1 jss142 ldapusers 39990520 Dec 15 11:04 main/tc.exe
+-rwxr-xr-x 1 jss142 ldapusers 48111936 Dec 15 11:04 main/wrf.exe
  
 ==========================================================================
  

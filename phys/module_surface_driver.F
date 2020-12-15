@@ -2022,8 +2022,9 @@ CONTAINS
        IF (PRESENT(qv_curr)                            .AND.    &
            PRESENT(mol)        .AND.  PRESENT(regime)  .AND.    &
                                                       .TRUE. ) THEN
-         CALL wrf_debug( 100, 'in SFCLAY' )
+         CALL wrf_debug( 100, 'in SFCLAYREV' )
          IF ( FRACTIONAL_SEAICE == 1 ) THEN
+			 CALL wrf_debug( 100, 'jss: fractional_seaice in SFCLAYREV' )
             CALL SFCLAYREV_SEAICE_WRAPPER(u_phytmp,v_phytmp,t_phy,qv_curr,&
                  p_phy,dz8w,cp,g,rcp,r_d,xlv,psfc,chs,chs2,cqs2,cpm, &
                  znt,ust,pblh,mavail,zol,mol,regime,psim,psih,fm,fhh, &
@@ -2042,6 +2043,7 @@ CONTAINS
                  ustm,ck,cka,cd,cda,isftcflx,iz0tlnd,                &
                  sf_surface_physics  )
          ELSE
+			 CALL wrf_debug( 100, 'jss: calling SFCLAYREV' )
          CALL SFCLAYREV(u_phytmp,v_phytmp,t_phy,qv_curr,&
                p_phy,dz8w,cp,g,rcp,r_d,xlv,psfc,chs,chs2,cqs2,cpm, &
                znt,ust,pblh,mavail,zol,mol,regime,psim,psih,fm,fhh, &
@@ -2054,13 +2056,16 @@ CONTAINS
                ims,ime, jms,jme, kms,kme,                          &
                i_start(ij),i_end(ij), j_start(ij),j_end(ij), kts,kte,    &
                ustm,ck,cka,cd,cda,isftcflx,iz0tlnd, scm_force_flux    )
+			 CALL wrf_debug( 100, 'jss: out of SFCLAYREV' )
 #if ( EM_CORE==1)
+			 CALL wrf_debug( 100, 'jss: starting ch loops' )
            DO j = j_start(ij),j_end(ij)
            DO i = i_start(ij),i_end(ij)
              ch(i,j) = chs (i,j)
 !!             ch(i,j) = flhc(i,j)/( cpm(i,j)*rho(i,kts,j) )
            end do
            end do
+			 CALL wrf_debug( 100, 'jss: out of ch loops' )
 #endif
          ENDIF
        ELSE
@@ -2445,6 +2450,7 @@ CONTAINS
        CALL wrf_error_fatal ( message )
 
      END SELECT sfclay_select
+	 CALL wrf_debug( 100, 'jss: out of sfclay_select' )
 
 !  Compute uratx, vratx, tratx for obs nudging
      IF(PRESENT(uratx) .and. PRESENT(vratx) .and. PRESENT(tratx))THEN

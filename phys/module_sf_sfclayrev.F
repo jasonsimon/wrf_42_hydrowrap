@@ -202,10 +202,13 @@ CONTAINS
 
       INTEGER ::  I,J
 
+	 CALL wrf_debug( 100, 'jss: top of sfclayrev' )
+
       DO J=jts,jte
         DO i=its,ite
           dz8w1d(I) = dz8w(i,1,j)
         ENDDO
+		 CALL wrf_debug( 100, 'jss: out of dz loop' )
    
         DO i=its,ite
            U1D(i) =U3D(i,1,j)
@@ -214,6 +217,7 @@ CONTAINS
            P1D(i) =P3D(i,1,j)
            T1D(i) =T3D(i,1,j)
         ENDDO
+		 CALL wrf_debug( 100, 'jss: out of u/v/q/p/t 1d loop' )
 
         !  Sending array starting locations of optional variables may cause
         !  troubles, so we explicitly change the call.
@@ -383,12 +387,17 @@ CONTAINS
 
 
 !-------------------------------------------------------------------
+
+	 CALL wrf_debug( 100, 'jss: top of sfclay1d' )
+
       KL=kte
 
       DO i=its,ite
 ! PSFC cb
          PSFC(I)=PSFCPA(I)/1000.
       ENDDO
+
+	 CALL wrf_debug( 100, 'jss: out of psfc loop' )
 !                                                      
 !----CONVERT GROUND TEMPERATURE TO POTENTIAL TEMPERATURE:  
 !                                                            
@@ -398,6 +407,7 @@ CONTAINS
 !        THGB(I)=TSK(I)*(100./PSFC(I))**ROVCP                
         THGB(I)=TSK(I)*(P1000mb/PSFCPA(I))**ROVCP   
     5 CONTINUE                                               
+	 CALL wrf_debug( 100, 'jss: past 5 continue' )
 !                                                            
 !-----DECOUPLE FLUX-FORM VARIABLES TO GIVE U,V,T,THETA,THETA-VIR.,
 !     T-VIR., QV, AND QC AT CROSS POINTS AND AT KTAU-1.  
@@ -408,6 +418,7 @@ CONTAINS
 !         TENDENCIES.                             
 !                                                           
    10 CONTINUE                                                     
+	 CALL wrf_debug( 100, 'jss: past 10 continue' )
 
 !     DO 24 I=its,ite
 !        UX(I)=U1D(I)
@@ -415,6 +426,7 @@ CONTAINS
 !  24 CONTINUE                                             
                                                              
    26 CONTINUE                                               
+	 CALL wrf_debug( 100, 'jss: past 26 continue' )
                                                    
 !.....SCR3(I,K) STORE TEMPERATURE,                           
 !     SCR4(I,K) STORE VIRTUAL TEMPERATURE.                                       
@@ -430,6 +442,7 @@ CONTAINS
          THVX(I)=THX(I)                                                     
          QX(I)=0.                                                             
    30 CONTINUE                                                                 
+	 CALL wrf_debug( 100, 'jss: past 30 continue' )
 !                                                                                
       DO I=its,ite
          QGH(I)=0.                                                                
@@ -437,6 +450,7 @@ CONTAINS
          FLQC(I)=0.                                                               
          CPM(I)=CP                                                                
       ENDDO
+	 CALL wrf_debug( 100, 'jss: out of qgh/fl/cpm loop' )
 !                                                                                
 !     IF(IDRY.EQ.1)GOTO 80                                                   
       DO 50 I=its,ite
@@ -445,6 +459,7 @@ CONTAINS
          THVX(I)=THX(I)*TVCON                                               
          SCR4(I)=SCR3(I)*TVCON                                              
    50 CONTINUE                                                                 
+	 CALL wrf_debug( 100, 'jss: past 50 continue' )
 !                                                                                
       DO 60 I=its,ite
         E1=SVP1*EXP(SVP2*(TGDSA(I)-SVPT0)/(TGDSA(I)-SVP3))                       
@@ -457,7 +472,9 @@ CONTAINS
         QGH(I)=EP2*E1/(PL-E1)                                                 
         CPM(I)=CP*(1.+0.8*QX(I))                                   
    60 CONTINUE                                                                   
+	 CALL wrf_debug( 100, 'jss: past 60 continue' )
    80 CONTINUE
+	 CALL wrf_debug( 100, 'jss: past 80 continue' )
                                                                                  
 !-----COMPUTE THE HEIGHT OF FULL- AND HALF-SIGMA LEVELS ABOVE GROUND             
 !     LEVEL, AND THE LAYER THICKNESSES.                                          
