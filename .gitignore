@@ -18,3 +18,4 @@ configure.wrf*
 *.backup
 *.f90
 jlog
+run/namelist.input.backup*
