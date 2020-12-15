@@ -115,7 +115,6 @@ CONTAINS
               nlst_rt(did)%zsoil8(1:nlst_rt(did)%nsoil) = -1*grid%zs(1:nlst_rt(did)%nsoil)
            endif
 
-		   !jss note this for potential time update stuff
             CALL domain_clock_get( grid, current_timestr=cpl_outdate)
             nlst_rt(did)%startdate(1:19) = cpl_outdate(1:19)
             nlst_rt(did)%olddate(1:19) = cpl_outdate(1:19)
@@ -213,8 +212,7 @@ CONTAINS
 		   !jss adding this so that WRF soil temp is initialized from hydro
 		   !restart
             do k = 1, nlst_rt(did)%nsoil
-                grid%TSLB(its:ite,k,jts:jte) = RT_DOMAIN(did)%stc(:,:,k)
-			    write(6,*) "JSS: setting WRF TSLB to Hydro stc"
+                grid%TSLB(its:ite,k,jts:jte) = RT_DOMAIN(did)%STC(:,:,k)
             end do 
 #endif
        else
@@ -232,7 +230,7 @@ CONTAINS
 
 ! add for update the WRF state variable.
             do k = 1, nlst_rt(did)%nsoil
-                !grid%TSLB(its:ite,k,jts:jte) = RT_DOMAIN(did)%STC(:,:,k) 
+                ! grid%TSLB(its:ite,k,jts:jte) = RT_DOMAIN(did)%STC(:,:,k)
                 grid%smois(its:ite,k,jts:jte) = RT_DOMAIN(did)%smc(:,:,k)
                 grid%sh2o(its:ite,k,jts:jte) = RT_DOMAIN(did)%sh2ox(:,:,k)
             end do 

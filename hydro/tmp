@@ -1,0 +1,1074 @@
+Data_Rec/module_namelist.F:    TYPE(namelist_rt_field) , dimension(max_domain) :: nlst_rt
+Data_Rec/module_namelist.F:    save nlst_rt 
+HYDRO_drv/module_HYDRO_drv.F:   use module_namelist, only: nlst_rt, read_rt_nlst
+HYDRO_drv/module_HYDRO_drv.F:     if(nlst_rt(did)%dt .gt. nlst_rt(did)%rst_dt*60) then
+HYDRO_drv/module_HYDRO_drv.F:        call geth_newdate(out_date, nlst_rt(did)%startdate, nint(nlst_rt(did)%dt*rt_domain(did)%rst_counts))
+HYDRO_drv/module_HYDRO_drv.F:        call geth_newdate(out_date, nlst_rt(did)%startdate, nint(nlst_rt(did)%rst_dt*60*rt_domain(did)%rst_counts))
+HYDRO_drv/module_HYDRO_drv.F:     if ( (nlst_rt(did)%rst_dt .gt. 0) .and. (out_date(1:19) == nlst_rt(did)%olddate(1:19)) ) then
+HYDRO_drv/module_HYDRO_drv.F:     if ( (nlst_rt(did)%olddate(9:10) == "01") .and. (nlst_rt(did)%olddate(12:13) == "00") .and. &
+HYDRO_drv/module_HYDRO_drv.F:          (nlst_rt(did)%olddate(15:16) == "00").and. (nlst_rt(did)%olddate(18:19) == "00") .and. &
+HYDRO_drv/module_HYDRO_drv.F:          (nlst_rt(did)%rst_dt .le. 0)  ) then 
+HYDRO_drv/module_HYDRO_drv.F:           if(nlst_rt(did)%startdate(1:16) .ne. nlst_rt(did)%olddate(1:16) ) then
+HYDRO_drv/module_HYDRO_drv.F:      write(6,*) "yw check output restart at ",nlst_rt(did)%olddate(1:16)
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%rst_bi_out .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:             call mpp_land_bcast_char(16,nlst_rt(did)%olddate(1:16))
+HYDRO_drv/module_HYDRO_drv.F:             call   RESTART_OUT_bi(trim("HYDRO_RST."//nlst_rt(did)%olddate(1:16)   &
+HYDRO_drv/module_HYDRO_drv.F:                 //"_DOMAIN"//trim(nlst_rt(did)%hgrid)//"."//trim(str_tmp)),  did)
+HYDRO_drv/module_HYDRO_drv.F:             call   RESTART_OUT_nc(trim("HYDRO_RST."//nlst_rt(did)%olddate(1:16)   &
+HYDRO_drv/module_HYDRO_drv.F:                 //"_DOMAIN"//trim(nlst_rt(did)%hgrid)),  did)
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%olddate(1:19) .eq. nlst_rt(did)%startdate(1:19) .and. rt_domain(did)%his_out_counts .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:         write(6,*) "output hydrology at time : ",nlst_rt(did)%olddate(1:19), rt_domain(did)%his_out_counts
+HYDRO_drv/module_HYDRO_drv.F:         write(78,*) "output hydrology at time : ",nlst_rt(did)%olddate(1:19), rt_domain(did)%his_out_counts
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%dt .gt. nlst_rt(did)%out_dt*60) then
+HYDRO_drv/module_HYDRO_drv.F:             call geth_newdate(out_date, nlst_rt(did)%startdate, nint(nlst_rt(did)%dt*rt_domain(did)%out_counts))
+HYDRO_drv/module_HYDRO_drv.F:             call geth_newdate(out_date, nlst_rt(did)%startdate, nint(nlst_rt(did)%out_dt*60*rt_domain(did)%out_counts))
+HYDRO_drv/module_HYDRO_drv.F:         if ( out_date(1:19) == nlst_rt(did)%olddate(1:19) ) then
+HYDRO_drv/module_HYDRO_drv.F:             write(6,*) "output hydrology at time : ",nlst_rt(did)%olddate(1:19)
+HYDRO_drv/module_HYDRO_drv.F:             write(78,*) "output hydrology at time : ",nlst_rt(did)%olddate(1:19)
+HYDRO_drv/module_HYDRO_drv.F:     if(nlst_rt(did)%out_dt*60 .gt. nlst_rt(did)%DT) then
+HYDRO_drv/module_HYDRO_drv.F:        kt = rt_domain(did)%his_out_counts*nlst_rt(did)%out_dt*60/nlst_rt(did)%DT
+HYDRO_drv/module_HYDRO_drv.F:!       if ( (trim(nlst_rt(did)%restart_file) /= "") .and. ( nlst_rt(did)%startdate(1:19) == nlst_rt(did)%olddate(1:19) ) ) then
+HYDRO_drv/module_HYDRO_drv.F:!             print*, "yyyywww restart_file = ", trim(nlst_rt(did)%restart_file) 
+HYDRO_drv/module_HYDRO_drv.F:!             write(78,*) "yyyywww restart_file = ", trim(nlst_rt(did)%restart_file) 
+HYDRO_drv/module_HYDRO_drv.F:          if ( nlst_rt(did)%startdate(1:19) == nlst_rt(did)%olddate(1:19) ) iniflag = 1
+HYDRO_drv/module_HYDRO_drv.F:          if ( (trim(nlst_rt(did)%restart_file) /= "") .and. ( nlst_rt(did)%startdate(1:19) == nlst_rt(did)%olddate(1:19) ) ) rtflag = 1
+HYDRO_drv/module_HYDRO_drv.F:          if(nlst_rt(did)%t0OutputFlag .eq. 0) return
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%t0OutputFlag .eq. 0) return
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%LSMOUT_DOMAIN .eq. 1)  then
+HYDRO_drv/module_HYDRO_drv.F:            if(nlst_rt(did)%io_form_outputs .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:               call output_lsm(trim(nlst_rt(did)%olddate(1:4)//nlst_rt(did)%olddate(6:7)//nlst_rt(did)%olddate(9:10)  &
+HYDRO_drv/module_HYDRO_drv.F:                    //nlst_rt(did)%olddate(12:13)//nlst_rt(did)%olddate(15:16)//  &
+HYDRO_drv/module_HYDRO_drv.F:                    ".LSMOUT_DOMAIN"//trim(nlst_rt(did)%hgrid)),     &
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%SUBRTSWCRT         .gt. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%OVRTSWCRT          .gt. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%GWBASESWCRT        .gt. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%CHANRTSWCRT        .gt. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%channel_only       .gt. 0 .or. & 
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%channelBucket_only .gt. 0      ) then
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%RTOUT_DOMAIN       .eq. 1 .and. &
+HYDRO_drv/module_HYDRO_drv.F:      nlst_rt(did)%channel_only       .eq. 0 .and. &
+HYDRO_drv/module_HYDRO_drv.F:      nlst_rt(did)%channelBucket_only .eq. 0       ) then 
+HYDRO_drv/module_HYDRO_drv.F:              if(mod(rtout_factor,3) .eq. 0 .or. nlst_rt(did)%io_config_outputs .ne. 5) then
+HYDRO_drv/module_HYDRO_drv.F:                 if(nlst_rt(did)%io_form_outputs .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:                    call output_rt_NWM(did,nlst_rt(did)%igrid)
+HYDRO_drv/module_HYDRO_drv.F:                      nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                      nlst_rt(did)%nsoil, &
+HYDRO_drv/module_HYDRO_drv.F:   !                  nlst_rt(did)%startdate, nlst_rt(did)%olddate,
+HYDRO_drv/module_HYDRO_drv.F:                      nlst_rt(did)%sincedate, nlst_rt(did)%olddate, RT_DOMAIN(did)%QSUBRT,&
+HYDRO_drv/module_HYDRO_drv.F:                      nlst_rt(did)%geo_finegrid_flnm,nlst_rt(did)%DT,&
+HYDRO_drv/module_HYDRO_drv.F:                      RT_DOMAIN(did)%LONVAL,rt_domain(did)%overland%properties%distance_to_neighbor,nlst_rt(did)%RTOUT_DOMAIN,&
+HYDRO_drv/module_HYDRO_drv.F:                      nlst_rt(did)%io_config_outputs &
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%io_form_outputs .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%GWBASESWCRT .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%channel_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:            if(nlst_rt(did)%output_gw .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:               call output_gw_NWM(did,nlst_rt(did)%igrid)
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%GWBASESWCRT .eq. 1) then 
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%channel_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:            if(nlst_rt(did)%output_gw  .eq. 1) call output_GW_Diag(did)
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%GWBASESWCRT .eq. 3) then
+HYDRO_drv/module_HYDRO_drv.F:              if(nlst_rt(did)%output_gw  .eq. 1)  &
+HYDRO_drv/module_HYDRO_drv.F:                nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                nlst_rt(did)%nsoil,                               &
+HYDRO_drv/module_HYDRO_drv.F:!               nlst_rt(did)%startdate, nlst_rt(did)%olddate,    &
+HYDRO_drv/module_HYDRO_drv.F:                nlst_rt(did)%sincedate, nlst_rt(did)%olddate,    &
+HYDRO_drv/module_HYDRO_drv.F:                nlst_rt(did)%geo_finegrid_flnm,nlst_rt(did)%DT, &
+HYDRO_drv/module_HYDRO_drv.F:                nlst_rt(did)%output_gw)
+HYDRO_drv/module_HYDRO_drv.F:           if (nlst_rt(did)%CHANRTSWCRT.eq.1.or.nlst_rt(did)%CHANRTSWCRT.eq.2) then 
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%io_form_outputs .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%CHRTOUT_DOMAIN .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%frxst_pts_out .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%CHANOBS_DOMAIN .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:!             if(nlst_rt(did)%CHRTOUT_DOMAIN  .eq. 1)  then
+HYDRO_drv/module_HYDRO_drv.F:!                   nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:!                   nlst_rt(did)%sincedate,nlst_rt(did)%olddate,RT_DOMAIN(did)%CHLON,&
+HYDRO_drv/module_HYDRO_drv.F:!                   !RT_DOMAIN(did)%QLINK,nlst_rt(did)%DT,Kt,                   &
+HYDRO_drv/module_HYDRO_drv.F:!                   str_out, nlst_rt(did)%DT,Kt,                   &
+HYDRO_drv/module_HYDRO_drv.F:!                   RT_DOMAIN(did)%STRMFRXSTPTS,nlst_rt(did)%order_to_write,   &
+HYDRO_drv/module_HYDRO_drv.F:!                   RT_DOMAIN(did)%NLINKSL,nlst_rt(did)%channel_option,        &
+HYDRO_drv/module_HYDRO_drv.F:!                   nlst_rt(did)%dt                                            &
+HYDRO_drv/module_HYDRO_drv.F:!                   , nlst_rt(did)%UDMP_OPT                                    &
+HYDRO_drv/module_HYDRO_drv.F:                if(nlst_rt(did)%CHRTOUT_DOMAIN  .gt. 0)  then
+HYDRO_drv/module_HYDRO_drv.F:                     nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                     nlst_rt(did)%sincedate,nlst_rt(did)%olddate,         &
+HYDRO_drv/module_HYDRO_drv.F:                     !RT_DOMAIN(did)%QLINK,nlst_rt(did)%DT,Kt,             &
+HYDRO_drv/module_HYDRO_drv.F:                     str_out, nlst_rt(did)%DT,Kt,                         &
+HYDRO_drv/module_HYDRO_drv.F:                     RT_DOMAIN(did)%NLINKSL,nlst_rt(did)%channel_option,  &
+HYDRO_drv/module_HYDRO_drv.F:                     !, RT_DOMAIN(did)%QLateral, nlst_rt(did)%io_config_outputs,
+HYDRO_drv/module_HYDRO_drv.F:                     , RT_DOMAIN(did)%QLateral, nlst_rt(did)%io_config_outputs, vel_out &
+HYDRO_drv/module_HYDRO_drv.F:                     , RT_DOMAIN(did)%qin_gwsubbas,    nlst_rt(did)%UDMP_OPT &
+HYDRO_drv/module_HYDRO_drv.F:              if(nlst_rt(did)%CHRTOUT_GRID  .eq. 1)  then
+HYDRO_drv/module_HYDRO_drv.F:                 if(nlst_rt(did)%io_form_outputs .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:                    call mpp_output_chrtgrd(nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                    nlst_rt(did)%startdate, nlst_rt(did)%olddate, &
+HYDRO_drv/module_HYDRO_drv.F:                    !RT_DOMAIN(did)%qlink, nlst_rt(did)%dt, nlst_rt(did)%geo_finegrid_flnm,   &
+HYDRO_drv/module_HYDRO_drv.F:                    str_out, nlst_rt(did)%dt, nlst_rt(did)%geo_finegrid_flnm,   &
+HYDRO_drv/module_HYDRO_drv.F:                    call output_chrtout_grd_NWM(did,nlst_rt(did)%igrid)
+HYDRO_drv/module_HYDRO_drv.F:                      if(nlst_rt(did)%io_form_outputs .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:                         if(nlst_rt(did)%outlake .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:                            call output_lakes_NWM(did,nlst_rt(did)%igrid)
+HYDRO_drv/module_HYDRO_drv.F:                         if(nlst_rt(did)%outlake .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:                                  nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                                  trim(nlst_rt(did)%sincedate), trim(nlst_rt(did)%olddate), &
+HYDRO_drv/module_HYDRO_drv.F:                                  RT_DOMAIN(did)%RESHT,nlst_rt(did)%DT,Kt)
+HYDRO_drv/module_HYDRO_drv.F:                         if(nlst_rt(did)%outlake .eq. 2) then
+HYDRO_drv/module_HYDRO_drv.F:                                  nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, &
+HYDRO_drv/module_HYDRO_drv.F:                                  trim(nlst_rt(did)%sincedate), trim(nlst_rt(did)%olddate), &
+HYDRO_drv/module_HYDRO_drv.F:                                  RT_DOMAIN(did)%RESHT,nlst_rt(did)%DT,Kt,RT_DOMAIN(did)%LAKEIDM)
+HYDRO_drv/module_HYDRO_drv.F:      if (trim(nlst_rt(did)%restart_file) /= "") then
+HYDRO_drv/module_HYDRO_drv.F:   nlst_rt(did)%sincedate = nlst_rt(did)%startdate
+HYDRO_drv/module_HYDRO_drv.F:        write(6,*) "*** read restart data: ",trim(nlst_rt(did)%restart_file)
+HYDRO_drv/module_HYDRO_drv.F:        write(78,*) "*** read restart data: ",trim(nlst_rt(did)%restart_file)
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%rst_bi_in .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:         call RESTART_IN_bi(trim(nlst_rt(did)%restart_file), did)
+HYDRO_drv/module_HYDRO_drv.F:         call RESTART_IN_nc(trim(nlst_rt(did)%restart_file), did)
+HYDRO_drv/module_HYDRO_drv.F:!yw  if (trim(nlst_rt(did)%restart_file) /= "") then 
+HYDRO_drv/module_HYDRO_drv.F:!yw          nlst_rt(did)%restart_file = ""
+HYDRO_drv/module_HYDRO_drv.F:         call geth_newdate(newdate, nlst_rt(did)%olddate, nint( nlst_rt(did)%dt))
+HYDRO_drv/module_HYDRO_drv.F:         nlst_rt(did)%olddate = newdate
+HYDRO_drv/module_HYDRO_drv.F:!          if(nlst_rt(did)%SYS_CPL .eq. 0 .or. nlst_rt(did)%SYS_CPL .eq. 1 )then
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%GWBASESWCRT        .ne. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:    nlst_rt(did)%SUBRTSWCRT         .ne. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:    nlst_rt(did)%OVRTSWCRT          .ne. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:    nlst_rt(did)%channel_only       .ne. 0 .or. &
+HYDRO_drv/module_HYDRO_drv.F:    nlst_rt(did)%channelBucket_only .ne. 0      ) then
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%SUBRTSWCRT .ne. 0 .or. nlst_rt(did)%OVRTSWCRT .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%OVRTSWCRT .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:         if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:                 RT_DOMAIN(did)%INFXSWGT, nlst_rt(did)%AGGFACTRT, RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx)
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%SUBRTSWCRT .ne.0) then
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%OVRTSWCRT .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:         if (nlst_rt(did)%UDMP_OPT .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:           if (nlst_rt(did)%SUBRTSWCRT .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:           if (nlst_rt(did)%SUBRTSWCRT .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:                                  rt_domain(did)%INFXSRT, nlst_rt(did)%AGGFACTRT, &
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%channel_only .eq. 0) then  
+HYDRO_drv/module_HYDRO_drv.F:      if (nlst_rt(did)%GWBASESWCRT .gt. 0) then
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      if (nlst_rt(did)%SUBRTSWCRT .ne.0  .or. nlst_rt(did)%OVRTSWCRT .ne. 0 ) then
+HYDRO_drv/module_HYDRO_drv.F:!yw  if (nlst_rt(did)%sys_cpl .eq. 2) then
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%GWBASESWCRT.ge.1) then     ! Switch to activate/specify GW/Baseflow
+HYDRO_drv/module_HYDRO_drv.F:!  IF (nlst_rt(did)%GWBASESWCRT.GE.1000) THEN     ! Switch to activate/specify GW/Baseflow
+HYDRO_drv/module_HYDRO_drv.F:   if (nlst_rt(did)%GWBASESWCRT.eq.1.or.nlst_rt(did)%GWBASESWCRT.eq.2) then   ! Call simple bucket baseflow scheme
+HYDRO_drv/module_HYDRO_drv.F:      if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:              RT_DOMAIN(did)%numbasns,      nlst_rt(did)%AGGFACTRT,         &
+HYDRO_drv/module_HYDRO_drv.F:              nlst_rt(did)%DT,              RT_DOMAIN(did)%INFXSWGT,        &
+HYDRO_drv/module_HYDRO_drv.F:              nlst_rt(did)%GWBASESWCRT,     nlst_rt(did)%OVRTSWCRT,         & 
+HYDRO_drv/module_HYDRO_drv.F:              rt_domain(did)%nhdBuckMask,   nlst_rt(did)%channelBucket_only )
+HYDRO_drv/module_HYDRO_drv.F:             rt_domain(did)%overland%properties%distance_to_neighbor,nlst_rt(did)%DT,&
+HYDRO_drv/module_HYDRO_drv.F:             nlst_rt(did)%GWBASESWCRT,nlst_rt(did)%OVRTSWCRT)
+HYDRO_drv/module_HYDRO_drv.F:    else if (nlst_rt(did)%gwBaseSwCRT .eq. 3) then
+HYDRO_drv/module_HYDRO_drv.F:	   if (nlst_rt(did)%gwsoilcpl .GT. 0) THEN
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT.eq.2) then
+HYDRO_drv/module_HYDRO_drv.F: if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:    call drive_CHANNEL_RSL(nlst_rt(did)%UDMP_OPT,RT_DOMAIN(did)%timestep_flag, RT_DOMAIN(did)%IXRT,RT_DOMAIN(did)%JXRT,  &
+HYDRO_drv/module_HYDRO_drv.F:       rt_domain(did)%overland%streams_and_lakes%lake_mask, nlst_rt(did)%DT, nlst_rt(did)%DTCT, nlst_rt(did)%DTRT_CH, &
+HYDRO_drv/module_HYDRO_drv.F:       RT_DOMAIN(did)%QINFLOWBASE, RT_DOMAIN(did)%CHANXI, RT_DOMAIN(did)%CHANYJ, nlst_rt(did)%channel_option,  &
+HYDRO_drv/module_HYDRO_drv.F:       , rt_domain(did)%nlinksize,            nlst_rt(did)%OVRTSWCRT &
+HYDRO_drv/module_HYDRO_drv.F:       ,                                     nlst_rt(did)%SUBRTSWCRT &
+HYDRO_drv/module_HYDRO_drv.F:       , nlst_rt(did)%channel_only , nlst_rt(did)%channelBucket_only &
+HYDRO_drv/module_HYDRO_drv.F:       nlst_rt(did)%SUBRTSWCRT, RT_DOMAIN(did)%QSUBRT, &
+HYDRO_drv/module_HYDRO_drv.F:       rt_domain(did)%overland%streams_and_lakes%lake_mask, nlst_rt(did)%DT, nlst_rt(did)%DTCT, nlst_rt(did)%DTRT_CH,&
+HYDRO_drv/module_HYDRO_drv.F:       RT_DOMAIN(did)%CHANYJ, nlst_rt(did)%channel_option, &
+HYDRO_drv/module_HYDRO_drv.F:       nlst_rt(did)%GwBaseSwCRT, gw2d(did)%ho, gw2d(did)%qgw_chanrt, &
+HYDRO_drv/module_HYDRO_drv.F:       nlst_rt(did)%gwChanCondSw, nlst_rt(did)%gwChanCondConstIn, &
+HYDRO_drv/module_HYDRO_drv.F:       nlst_rt(did)%gwChanCondConstOut,rt_domain(did)%velocity &
+HYDRO_drv/module_HYDRO_drv.F:    if((nlst_rt(did)%gwBaseSwCRT == 3) .and. (nlst_rt(did)%gwChanCondSw .eq. 1)) then
+HYDRO_drv/module_HYDRO_drv.F:            do kk=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:             do KRT=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:             do AGGFACYRT=nlst_rt(did)%AGGFACTRT-1,0,-1
+HYDRO_drv/module_HYDRO_drv.F:              do AGGFACXRT=nlst_rt(did)%AGGFACTRT-1,0,-1
+HYDRO_drv/module_HYDRO_drv.F:                IXXRT=I*nlst_rt(did)%AGGFACTRT-AGGFACXRT
+HYDRO_drv/module_HYDRO_drv.F:                JYYRT=J*nlst_rt(did)%AGGFACTRT-AGGFACYRT
+HYDRO_drv/module_HYDRO_drv.F:                do KRT=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:                                          / (nlst_rt(did)%AGGFACTRT**2)
+HYDRO_drv/module_HYDRO_drv.F:            do KRT=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:                                             / (nlst_rt(did)%AGGFACTRT**2)
+HYDRO_drv/module_HYDRO_drv.F:              do AGGFACYRT=nlst_rt(did)%AGGFACTRT-1,0,-1
+HYDRO_drv/module_HYDRO_drv.F:                do AGGFACXRT=nlst_rt(did)%AGGFACTRT-1,0,-1
+HYDRO_drv/module_HYDRO_drv.F:                  IXXRT=I*nlst_rt(did)%AGGFACTRT-AGGFACXRT
+HYDRO_drv/module_HYDRO_drv.F:                  JYYRT=J*nlst_rt(did)%AGGFACTRT-AGGFACYRT
+HYDRO_drv/module_HYDRO_drv.F:                                          = 1./FLOAT(nlst_rt(did)%AGGFACTRT**2)
+HYDRO_drv/module_HYDRO_drv.F:                  do KRT=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:        do i = 1, nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:            do kk=1,nlst_rt(did)%NSOIL
+HYDRO_drv/module_HYDRO_drv.F:call read_rt_nlst(nlst_rt(did) )
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%rtFlag .eq. 0) return
+HYDRO_drv/module_HYDRO_drv.F:call get_file_dimension(trim(nlst_rt(did)%geo_static_flnm), ix,jx)
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%sys_cpl .eq. 1 .or. nlst_rt(did)%sys_cpl .eq. 4) then
+HYDRO_drv/module_HYDRO_drv.F:        nlst_rt(did)%AGGFACTRT)
+HYDRO_drv/module_HYDRO_drv.F:   call wrf_LAND_set_INIT(node_info,numprocs,nlst_rt(did)%AGGFACTRT)
+HYDRO_drv/module_HYDRO_drv.F:rt_domain(did)%ixrt = ix*nlst_rt(did)%AGGFACTRT 
+HYDRO_drv/module_HYDRO_drv.F:rt_domain(did)%jxrt = jx*nlst_rt(did)%AGGFACTRT
+HYDRO_drv/module_HYDRO_drv.F:     call get_file_globalatts(trim(nlst_rt(did)%geo_static_flnm), &
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%GWBASESWCRT .eq. 3 ) then
+HYDRO_drv/module_HYDRO_drv.F:        nlst_rt(did)%nsoil)
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:if((nlst_rt(did)%channel_only .eq. 1 .or. nlst_rt(did)%channelBucket_only .eq. 1) .and. &
+HYDRO_drv/module_HYDRO_drv.F:     nlst_rt(1)%io_form_outputs .ne. 0) then
+HYDRO_drv/module_HYDRO_drv.F:      iret = nf90_open(trim(nlst_rt(1)%route_link_f),NF90_NOWRITE,ncid=ncid)
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%channel_only .ne. 1)  call get_dist_lrt(did) !! needed forchannelBucket_only
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%GWBASESWCRT .eq. 3 ) then
+HYDRO_drv/module_HYDRO_drv.F:        nlst_rt(did)%dt,&
+HYDRO_drv/module_HYDRO_drv.F:        nlst_rt(did)%dxrt0)
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) then
+HYDRO_drv/module_HYDRO_drv.F:   if (nlst_rt(did)%TERADJ_SOLAR.eq.1 .and. nlst_rt(did)%CHANRTSWCRT.ne.2) then   ! Perform ter rain adjustment of incoming solar
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%GWBASESWCRT .gt. 0) then
+HYDRO_drv/module_HYDRO_drv.F:   if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+HYDRO_drv/module_HYDRO_drv.F:if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT .eq. 2 ) then
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%CHANRTSWCRT .ne. 0) call init_stream_nudging
+HYDRO_drv/module_HYDRO_drv.F:!    if (trim(nlst_rt(did)%restart_file) == "") then
+HYDRO_drv/module_HYDRO_drv.F:if (trim(nlst_rt(did)%restart_file) == "") then
+HYDRO_drv/module_HYDRO_drv.F:!! Note that nlst_rt(did)%rstrt_swc is not changed at any point in between here and the rst_in.
+HYDRO_drv/module_HYDRO_drv.F:if(nlst_rt(did)%rstrt_swc.eq.1) then  !Switch for rest of restart accum vars...
+HYDRO_drv/module_HYDRO_drv.F:   print *, "Resetting RESTART Accumulation Variables to 0...",nlst_rt(did)%rstrt_swc
+HYDRO_drv/module_HYDRO_drv.F:         call get2d_lsm_soltyp(soltyp,RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx,trim(nlst_rt(did)%geo_static_flnm))
+HYDRO_drv/module_HYDRO_drv.F:         call get2d_lsm_real("HGT",RT_DOMAIN(did)%TERRAIN,RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx,trim(nlst_rt(did)%geo_static_flnm))
+HYDRO_drv/module_HYDRO_drv.F:         call get2d_lsm_real("XLAT",RT_DOMAIN(did)%lat_lsm,RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx,trim(nlst_rt(did)%geo_static_flnm))
+HYDRO_drv/module_HYDRO_drv.F:         call get2d_lsm_real("XLONG",RT_DOMAIN(did)%lon_lsm,RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx,trim(nlst_rt(did)%geo_static_flnm))
+HYDRO_drv/module_HYDRO_drv.F:         call get2d_lsm_vegtyp(RT_DOMAIN(did)%VEGTYP,RT_DOMAIN(did)%ix,RT_DOMAIN(did)%jx,trim(nlst_rt(did)%geo_static_flnm))
+HYDRO_drv/module_HYDRO_drv.F:            if(nlst_rt(did)%sys_cpl .eq. 2 ) then
+HYDRO_drv/module_HYDRO_drv.F:       RT_DOMAIN(did)%zsoil(1:nlst_rt(did)%nsoil) = nlst_rt(did)%zsoil8(1:nlst_rt(did)%nsoil)
+HYDRO_drv/module_HYDRO_drv.F:       do i = 2, nlst_rt(did)%nsoil
+HYDRO_drv/module_HYDRO_drv.F:       RT_DOMAIN(did)%SOLDEPRT = -1.0*RT_DOMAIN(did)%ZSOIL(nlst_rt(did)%NSOIL)
+HYDRO_drv/module_HYDRO_drv.F:       if(trim(nlst_rt(did)%hydrotbl_f) == "") then
+HYDRO_drv/module_HYDRO_drv.F:          ierr_flg = nf_open(trim(nlst_rt(did)%hydrotbl_f), NF_NOWRITE, ncid)
+nudging/module_nudging_io.F:use module_namelist, only: nlst_rt
+nudging/module_nudging_io.F:! User controllable options: namelist option for nlst_rt(did)%timeSlicePath
+nudging/module_nudging_io.F:tmpTimeSlice = trim(nlst_rt(did)%timeSlicePath) // date // "." // &
+nudging/module_nudging_io.F:! User controllable options: namelist option for nlst_rt(did)%timeSlicePath
+nudging/module_nudging_io.F:use module_namelist, only: nlst_rt
+nudging/module_nudging_io.F:route_link_f   = nlst_rt(did)%route_link_f
+nudging/module_nudging_io.F:   ! jlm: set did:=1 in nlst_rt
+nudging/module_nudging_io.F:   write(*,'("geo_finegrid_flnm: ''", A, "''")') trim(nlst_rt(did)%geo_finegrid_flnm)
+nudging/module_nudging_io.F:   iret = nf_open(trim(nlst_rt(1)%geo_finegrid_flnm), NF_NOWRITE, ncstatic)
+nudging/module_nudging_io.F:           trim(nlst_rt(1)%geo_finegrid_flnm)
+nudging/module_stream_nudging.F:use module_namelist,      only: nlst_rt
+nudging/module_stream_nudging.F:integer            :: nTimesLastObs   !! aka nlst_rt(did)%nLastObs
+nudging/module_stream_nudging.F:nudgingParamFile       = nlst_rt(did)%nudgingParamFile
+nudging/module_stream_nudging.F:netwkReExFile          = nlst_rt(did)%netwkReExFile
+nudging/module_stream_nudging.F:readTimesliceParallel  = nlst_rt(did)%readTimesliceParallel
+nudging/module_stream_nudging.F:temporalPersistence    = nlst_rt(did)%temporalPersistence
+nudging/module_stream_nudging.F:persistBias            = nlst_rt(did)%persistBias
+nudging/module_stream_nudging.F:biasWindowBeforeT0     = nlst_rt(did)%biasWindowBeforeT0
+nudging/module_stream_nudging.F:nudgingLastObsFile     = nlst_rt(did)%nudgingLastObsFile
+nudging/module_stream_nudging.F:nTimesLastObs          = nlst_rt(did)%nLastObs
+nudging/module_stream_nudging.F:minNumPairsBiasPersist = nlst_rt(did)%minNumPairsBiasPersist
+nudging/module_stream_nudging.F:maxAgePairsBiasPersist = nlst_rt(did)%maxAgePairsBiasPersist
+nudging/module_stream_nudging.F:invDistTimeWeightBias  = nlst_rt(did)%invDistTimeWeightBias
+nudging/module_stream_nudging.F:noConstInterfBias      = nlst_rt(did)%noConstInterfBias
+nudging/module_stream_nudging.F:!!$if (nlst_rt(did)%channel_option .eq. 3) then
+nudging/module_stream_nudging.F:if (nlst_rt(did)%channel_option .eq. 1 .or. &
+nudging/module_stream_nudging.F:    nlst_rt(did)%channel_option .eq. 2) then
+nudging/module_stream_nudging.F:   allocate(obsStaticStr(ll)%lastObsDischarge(     nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:   allocate(obsStaticStr(ll)%lastObsModelDischarge(nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:   allocate(obsStaticStr(ll)%lastObsTime(          nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:   allocate(obsStaticStr(ll)%lastObsQuality(       nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:         nudgingLastObsFileTry = 'nudgingLastObs.' // nlst_rt(did)%olddate // '.nc'
+nudging/module_stream_nudging.F:               allocate(lastObsStr(ll)%lastObsDischarge(     nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:               allocate(lastObsStr(ll)%lastObsModelDischarge(nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:               allocate(lastObsStr(ll)%lastObsTime(          nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:               allocate(lastObsStr(ll)%lastObsQuality(       nlst_rt(did)%nLastObs))
+nudging/module_stream_nudging.F:   lsmDt = nlst_rt(did)%dt
+nudging/module_stream_nudging.F:lsmDt = nlst_rt(did)%dt
+nudging/module_stream_nudging.F:if(my_id .eq. io_id) lsmTime  = nlst_rt(did)%olddate
+nudging/module_stream_nudging.F:if(my_id .eq. io_id) initTime = nlst_rt(did)%startdate
+nudging/module_stream_nudging.F:lsmTime = nlst_rt(did)%olddate
+nudging/module_stream_nudging.F:initTime = nlst_rt(did)%startdate
+nudging/module_stream_nudging.F:!call geth_newdate(hydroTime, nlst_rt(1)%olddate, hydroDT+nint(nlst_rt(1)%dt))
+nudging/module_stream_nudging.F:                                 nlst_rt(did)%olddate,          &
+nudging/module_stream_nudging.F:if (nlst_rt(did)%channel_option .eq. 3) nLinks = RT_DOMAIN(did)%NLINKS ! For gridded channel routing
+nudging/module_stream_nudging.F:if (nlst_rt(did)%channel_option .eq. 1 .or.   &
+nudging/module_stream_nudging.F:    nlst_rt(did)%channel_option .eq. 2      ) &
+nudging/module_stream_nudging.F:                 biasWeights(tt) = real(obsDtInt + nlst_rt(did)%dtrt_ch)
+Routing/module_channel_routing.F:       use module_namelist, only:  nlst_rt 
+Routing/module_channel_routing.F:!   if(nlst_rt(1)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_channel_routing.F:!        nlst_rt(1)%output_channelBucket_influx .eq. 2       ) &
+Routing/module_channel_routing.F:   if(nlst_rt(1)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_channel_routing.F:      nlst_rt(1)%output_channelBucket_influx .eq. 2       ) then
+Routing/module_channel_routing.F:   if(nlst_rt(1)%output_channelBucket_influx .eq. 3) &
+Routing/module_channel_routing.F:         if (nlst_rt(1)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_channel_routing.F:             nlst_rt(1)%output_channelBucket_influx .eq. 2      ) &
+Routing/module_channel_routing.F:         if (nlst_rt(1)%output_channelBucket_influx .eq. 3) &
+Routing/module_channel_routing.F:         if(nlst_rt(1)%output_channelBucket_influx .eq. 1 .OR. &
+Routing/module_channel_routing.F:            nlst_rt(1)%output_channelBucket_influx .eq. 2       ) &
+Routing/module_channel_routing.F:         if(nlst_rt(1)%output_channelBucket_influx .eq. 3) &
+Routing/module_channel_routing.F:if(nlst_rt(1)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_channel_routing.F:   nlst_rt(1)%output_channelBucket_influx .eq. 2       ) &
+Routing/module_channel_routing.F:if(nlst_rt(1)%output_channelBucket_influx .eq. 3) &
+Routing/module_gw_gw2d.F:      itermax = nlst_rt(did)%GwPreCycles
+Routing/module_gw_gw2d.F:	  if((nlst_rt(did)%GwPreDiag .and. iter==1) .or. &
+Routing/module_gw_gw2d.F:	      nlst_rt(did)%GwPreDiag .and. (mod(iter, nlst_rt(did)%GwPreDiagInterval) .eq. 0) ) then
+Routing/module_gw_gw2d.F:           call output_gw_spinup(nlst_rt(did)%igrid, 1000000,                &
+Routing/module_gw_gw2d.F:                            nlst_rt(did)%startdate, nlst_rt(did)%olddate, &
+Routing/module_gw_gw2d.F:                            nlst_rt(did)%geo_finegrid_flnm,nlst_rt(did)%DT,     &
+Routing/module_gw_gw2d.F:                            nlst_rt(did)%output_gw)
+Routing/module_gw_gw2d.F:  nsoil = nlst_rt(did)%nsoil
+Routing/module_gw_gw2d.F:  ztrans = (rt_domain(did)%elrt + nlst_rt(did)%zsoil8(nsoil)) - gw2d(did)%ho
+Routing/module_gw_gw2d.F:       do m=nlst_rt(did)%aggfactRT-1,0,-1
+Routing/module_gw_gw2d.F:         do n=nlst_rt(did)%aggfactRT-1,0,-1
+Routing/module_gw_gw2d.F:	    ixxRT = i * nlst_rt(did)%aggfactRT-n
+Routing/module_gw_gw2d.F:	    jyyRT = j * nlst_rt(did)%aggfactRT-m
+Routing/module_gw_gw2d.F:            gw2d(did)%qsgw(i,j) = agg/(nlst_rt(did)%aggfactRT**2)
+Routing/module_HYDRO_io.F:   use module_namelist, only: nlst_rt
+Routing/module_HYDRO_io.F:!     if(nlst_rt(did)%GWBASESWCRT .ne. 3) then
+Routing/module_HYDRO_io.F:    seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:    sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                  //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:       iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:    seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:    sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                  //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:       iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:    seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:    sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                  //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:       iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:     sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                   //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:              nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:              if(nlst_rt(did)%OVRTSWCRT .eq. 1) then              !123456789112345678921234567
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 2) then
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:                 if(nlst_rt(did)%OVRTSWCRT .eq. 1) then
+Routing/module_HYDRO_io.F:         iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:         iret = nf_put_att_text(ncid2, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:                nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 2) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid2, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:     sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                   //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:              nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:              if(nlst_rt(did)%OVRTSWCRT .eq. 1) then              !123456789112345678921234567
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 2) then
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:                 if(nlst_rt(did)%OVRTSWCRT .eq. 1) then
+Routing/module_HYDRO_io.F:         iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:         iret = nf_put_att_text(ncid2, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:                nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 2) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid2, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:     sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                     //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:        iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:    iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:    iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:     sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                         //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:        iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:    iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))    
+Routing/module_HYDRO_io.F:    iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:    seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:    sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                 //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate)) 
+Routing/module_HYDRO_io.F:          iret = nf_def_dim(ncid, "depth", nlst_rt(did)%nsoil, dimid_soil)  !-- 3-d soils
+Routing/module_HYDRO_io.F:          do n = 1, nlst_rt(did)%nsoil
+Routing/module_HYDRO_io.F:        call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%stc,"stc")
+Routing/module_HYDRO_io.F:        call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%smc,"smc")
+Routing/module_HYDRO_io.F:        call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%sh2ox,"sh2ox")
+Routing/module_HYDRO_io.F:   if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:       nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:          iret = nf_def_dim(ncid, "depth", nlst_rt(did)%nsoil, dimid_soil)  !-- 3-d soils
+Routing/module_HYDRO_io.F:       if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:       if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:            nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:          do n = 1, nlst_rt(did)%nsoil
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:      nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:      nlst_rt(did)%GWBASESWCRT .ne. 0       ) then
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:          do n = 1, nlst_rt(did)%nsoil
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%CHANRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:!         if(nlst_rt(did)%channel_option .eq. 3) &
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%channel_option .eq. 3) &
+Routing/module_HYDRO_io.F:         if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:             nlst_rt(did)%channelBucket_only .eq. 0         ) &
+Routing/module_HYDRO_io.F:         !if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%GWBASESWCRT.eq.1) then
+Routing/module_HYDRO_io.F:         if( nlst_rt(did)%channel_only .eq. 0) then
+Routing/module_HYDRO_io.F:            if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%gwBaseSwCRT .eq. 3)then
+Routing/module_HYDRO_io.F:   end if  !  end if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                    nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                    nlst_rt(did)%GWBASESWCRT .ne. 0       ) 
+Routing/module_HYDRO_io.F:   iret = nf_put_att_text(ncid,NF_GLOBAL,"Restart_Time",19,nlst_rt(did)%olddate(1:19))
+Routing/module_HYDRO_io.F:   iret = nf_put_att_text(ncid,NF_GLOBAL,"Since_Date",19,nlst_rt(did)%sincedate(1:19))
+Routing/module_HYDRO_io.F:   iret = nf_put_att_real(ncid,NF_GLOBAL,"DTCT",NF_REAL, 1,nlst_rt(did)%DTCT)
+Routing/module_HYDRO_io.F:        nlst_rt(did)%channel_only)
+Routing/module_HYDRO_io.F:        nlst_rt(did)%channelBucket_only)
+Routing/module_HYDRO_io.F:if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:     nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:   call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%stc,"stc")
+Routing/module_HYDRO_io.F:   call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%smc,"smc")
+Routing/module_HYDRO_io.F:   call w_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%sh2ox,"sh2ox")
+Routing/module_HYDRO_io.F:if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:   nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:   nlst_rt(did)%GWBASESWCRT .ne. 0       ) then
+Routing/module_HYDRO_io.F:   if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:       nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:      call w_rst_rt_nc3(ncid,rt_domain(did)%ixrt,rt_domain(did)%jxrt,nlst_rt(did)%nsoil,rt_domain(did)%SH2OWGT, "sh2owgt" )
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%CHANRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:!                    if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:          nlst_rt(did)%channelBucket_only .eq. 0         ) &
+Routing/module_HYDRO_io.F:   end if  !    if(nlst_rt(did)%CHANRTSWCRT.eq.1) 
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%GWBASESWCRT.eq.1) then
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only .eq. 0) then
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%GWBASESWCRT.eq.3) then
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:          nlst_rt(did)%channelBucket_only .eq. 0         ) &           
+Routing/module_HYDRO_io.F:end if  ! end if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                nlst_rt(did)%GWBASESWCRT .ne. 0       ) 
+Routing/module_HYDRO_io.F:!         write(iunit,ERR=101) nlst_rt(did)%olddate(1:19)
+Routing/module_HYDRO_io.F:          write(iunit,ERR=101) nlst_rt(did)%sincedate(1:19)
+Routing/module_HYDRO_io.F:!         write(iunit,ERR=101) nlst_rt(did)%DTCT 
+Routing/module_HYDRO_io.F:          if(nlst_rt(did)%SUBRTSWCRT.EQ.1.OR.nlst_rt(did)%OVRTSWCRT.EQ.1 .or. nlst_rt(did)%GWBASESWCRT .ne. 0) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%CHANRTSWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%GWBASESWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%SUBRTSWCRT.EQ.1.OR.nlst_rt(did)%OVRTSWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:!         read(iunit,ERR=101) nlst_rt(did)%olddate(1:19)
+Routing/module_HYDRO_io.F:          read(iunit,ERR=101) nlst_rt(did)%sincedate(1:19)
+Routing/module_HYDRO_io.F:!         read(iunit,ERR=101) nlst_rt(did)%DTCT 
+Routing/module_HYDRO_io.F:          if(nlst_rt(did)%SUBRTSWCRT.EQ.0.and.nlst_rt(did)%OVRTSWCRT.EQ.0) rt_domain(did)%overland%control%surface_water_head_lsm = 0
+Routing/module_HYDRO_io.F:          if(nlst_rt(did)%SUBRTSWCRT.EQ.1.OR.nlst_rt(did)%OVRTSWCRT.EQ.1 .or. nlst_rt(did)%GWBASESWCRT .ne. 0) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%CHANRTSWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%GWBASESWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:                if(nlst_rt(did)%SUBRTSWCRT.EQ.1.OR.nlst_rt(did)%OVRTSWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) iret=1
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%channel_only .eq. 0) iret=1
+Routing/module_HYDRO_io.F:         write(logUnit,*) 'channel_only run:', nlst_rt(did)%channel_only
+Routing/module_HYDRO_io.F:         write(logUnit,*) 'channelBucket_only run:', nlst_rt(did)%channelBucket_only
+Routing/module_HYDRO_io.F:   iret = NF_GET_ATT_REAL(ncid, NF_GLOBAL, 'DTCT', nlst_rt(did)%DTCT)
+Routing/module_HYDRO_io.F:   iret = nf_get_att_text(ncid,NF_GLOBAL,"Since_Date",nlst_rt(did)%sincedate(1:19))
+Routing/module_HYDRO_io.F:!   if( nlst_rt(did)%channel_only       .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!       nlst_rt(did)%channelBucket_only .eq. 1         ) &
+Routing/module_HYDRO_io.F:!       iret = nf_get_att_text(ncid,NF_GLOBAL,"Restart_Time",nlst_rt(did)%olddate(1:19))
+Routing/module_HYDRO_io.F:   if(iret /= 0) nlst_rt(did)%sincedate = nlst_rt(did)%startdate
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%DTCT .gt. 0) then
+Routing/module_HYDRO_io.F:      nlst_rt(did)%DTCT = min(nlst_rt(did)%DTCT, nlst_rt(did)%DTRT_CH)
+Routing/module_HYDRO_io.F:      nlst_rt(did)%DTCT = nlst_rt(did)%DTRT_CH
+Routing/module_HYDRO_io.F:call mpp_land_bcast_real1(nlst_rt(did)%DTCT)
+Routing/module_HYDRO_io.F:!if( nlst_rt(did)%channel_only       .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!    nlst_rt(did)%channelBucket_only .eq. 1         ) &
+Routing/module_HYDRO_io.F:!    call mpp_land_bcast_char(19, nlst_rt(did)%olddate)
+Routing/module_HYDRO_io.F:!! call mpp_land_bcast_char(19, nlst_rt(did)%sincedate) ! why not? we read it in.
+Routing/module_HYDRO_io.F:write(6,*) "nlst_rt(did)%nsoil=",nlst_rt(did)%nsoil
+Routing/module_HYDRO_io.F:if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:    nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%rst_typ .eq. 1 ) then 
+Routing/module_HYDRO_io.F:      call read_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%stc,"stc")
+Routing/module_HYDRO_io.F:      call read_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%smc,"smc")
+Routing/module_HYDRO_io.F:      call read_rst_nc3(ncid,rt_domain(did)%ix,rt_domain(did)%jx,nlst_rt(did)%nsoil,rt_domain(did)%sh2ox,"sh2ox")
+Routing/module_HYDRO_io.F:if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:   nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:   nlst_rt(did)%GWBASESWCRT .ne. 0       ) then
+Routing/module_HYDRO_io.F:   if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:       nlst_rt(did)%channelBucket_only .eq. 0         ) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%SUBRTSWCRT.eq.1.or.nlst_rt(did)%OVRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:         call read_rst_rt_nc3(ncid,rt_domain(did)%ixrt,rt_domain(did)%jxrt,nlst_rt(did)%nsoil,rt_domain(did)%SH2OWGT,"sh2owgt")
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%CHANRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_HYDRO_io.F:         !if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only       .eq. 0 .and. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%channelBucket_only .eq. 0         ) then 
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%SUBRTSWCRT.eq.1.or.nlst_rt(did)%OVRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:   end if  !  end if(nlst_rt(did)%CHANRTSWCRT.eq.1) 
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%GWBASESWCRT .eq. 1 .and. &
+Routing/module_HYDRO_io.F:      nlst_rt(did)%GW_RESTART  .ne. 0 .and. &
+Routing/module_HYDRO_io.F:      if( nlst_rt(did)%channel_only .eq. 0 ) then
+Routing/module_HYDRO_io.F:         if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_HYDRO_io.F:      end if !       if( nlst_rt(did)%channel_only .eq. 0 ) then
+Routing/module_HYDRO_io.F:   end if  ! end    if(nlst_rt(did)%GWBASESWCRT .eq. 1 .and. &
+Routing/module_HYDRO_io.F:!                      nlst_rt(did)%GW_RESTART  .ne. 0 .and. &
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%GWBASESWCRT.eq.3) then
+Routing/module_HYDRO_io.F:      if(nlst_rt(did)%SUBRTSWCRT.eq.1.or.nlst_rt(did)%OVRTSWCRT.eq.1) then
+Routing/module_HYDRO_io.F:end if  !  end if(nlst_rt(did)%SUBRTSWCRT  .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                 nlst_rt(did)%OVRTSWCRT   .eq. 1 .or. &
+Routing/module_HYDRO_io.F:!                 nlst_rt(did)%GWBASESWCRT .ne. 0       ) 
+Routing/module_HYDRO_io.F:!if(nlst_rt(did)%rstrt_swc.eq.1) then  !Switch for rest of restart accum vars...
+Routing/module_HYDRO_io.F:!            print *, "1 Resetting RESTART Accumulation Variables to 0...",nlst_rt(did)%rstrt_swc
+Routing/module_HYDRO_io.F:            if((nlst_rt(did)%channel_only .eq. 1 .or. nlst_rt(did)%channelBucket_only .eq. 1) .and. &
+Routing/module_HYDRO_io.F:if(nlst_rt(did)%GWBASESWCRT .eq. 3) then
+Routing/module_HYDRO_io.F:           if((nlst_rt(did)%olddate(12:13) .eq. "00") .and. (nlst_rt(did)%olddate(15:16) .eq. "00") ) ywflag = 99
+Routing/module_HYDRO_io.F:                   write(75,114) nlst_rt(did)%olddate(1:4),nlst_rt(did)%olddate(6:7),nlst_rt(did)%olddate(9:10), nlst_rt(did)%olddate(12:13), &
+Routing/module_HYDRO_io.F:! Compound channel variables, contingent on nlst_rt(did)%compound_channel option
+Routing/module_HYDRO_io.F:if(nlst_rt(did)%compound_channel) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) &
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:        seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:        sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                      //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:        if(UDMP_OPT .eq. 1 .and. nlst_rt(did)%output_channelBucket_influx .ne. 0) then
+Routing/module_HYDRO_io.F:                                 NF_INT, 1,            nlst_rt(1)%OVRTSWCRT )
+Routing/module_HYDRO_io.F:                                 NF_INT, 1,        int(nlst_rt(1)%dt)       )
+Routing/module_HYDRO_io.F:                                 NF_INT, 1,       nlst_rt(did)%channel_only )
+Routing/module_HYDRO_io.F:                                 NF_INT, 1, nlst_rt(did)%channelBucket_only )
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:              nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:              if(nlst_rt(did)%OVRTSWCRT .eq. 1) then              !123456789112345678921234567
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 2 .and. &
+Routing/module_HYDRO_io.F:              nlst_rt(did)%channel_only                .eq. 0         ) then
+Routing/module_HYDRO_io.F:           if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:              if(nlst_rt(did)%OVRTSWCRT .eq. 1) then
+Routing/module_HYDRO_io.F:         iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:       if(UDMP_OPT .eq. 1 .and. nlst_rt(did)%output_channelBucket_influx .ne. 0) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_HYDRO_io.F:                nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then
+Routing/module_HYDRO_io.F:             if(nlst_rt(did)%output_channelBucket_influx .eq. 2 .and. &
+Routing/module_HYDRO_io.F:                nlst_rt(did)%channel_only                .eq. 0         ) then
+Routing/module_HYDRO_io.F:            if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:          if(nlst_rt(did)%GWBASESWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:       if(nlst_rt(did)%channel_option .ne. 3) then
+Routing/module_HYDRO_io.F:!             write (51,951) i,nlst_rt(did)%olddate,g_qin_gwsubbas(i)
+Routing/module_HYDRO_io.F:!            write (52,951) i,nlst_rt(did)%olddate,g_qout_gwsubbas(i)
+Routing/module_HYDRO_io.F:!            write (53,951) i,nlst_rt(did)%olddate,g_z_gwsubbas(i)
+Routing/module_HYDRO_io.F:          call   output_gw_netcdf( nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, gnbasns, &
+Routing/module_HYDRO_io.F:                  trim(nlst_rt(did)%sincedate), trim(nlst_rt(did)%olddate), &
+Routing/module_HYDRO_io.F:!          write (51,951) i,nlst_rt(did)%olddate,rt_domain(did)%qin_gwsubbas(i)
+Routing/module_HYDRO_io.F:!          write (52,951) i,nlst_rt(did)%olddate,rt_domain(did)%qout_gwsubbas(i)
+Routing/module_HYDRO_io.F:!          write (53,951) i,nlst_rt(did)%olddate,rt_domain(did)%z_gwsubbas(i)
+Routing/module_HYDRO_io.F:        if(nlst_rt(did)%GWBASESWCRT.EQ.1) then
+Routing/module_HYDRO_io.F:          call   output_gw_netcdf( nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, RT_DOMAIN(did)%numbasns, &
+Routing/module_HYDRO_io.F:                  trim(nlst_rt(did)%sincedate), trim(nlst_rt(did)%olddate), &
+Routing/module_HYDRO_io.F:          call   output_gw_netcdf( nlst_rt(did)%igrid, nlst_rt(did)%split_output_count, RT_DOMAIN(did)%nlinksl, &
+Routing/module_HYDRO_io.F:                  trim(nlst_rt(did)%sincedate), trim(nlst_rt(did)%olddate), &
+Routing/module_HYDRO_io.F:     seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_HYDRO_io.F:     sec_valid_date = 'seconds since '//nlst_rt(1)%startdate(1:4)//'-'//nlst_rt(1)%startdate(6:7)//'-'//nlst_rt(1)%startdate(9:10) &
+Routing/module_HYDRO_io.F:                      //' '//nlst_rt(1)%startdate(12:13)//':'//nlst_rt(1)%startdate(15:16)//' UTC'
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_initialization_time", 19, trim(nlst_rt(1)%startdate))
+Routing/module_HYDRO_io.F:      iret = nf_put_att_text(ncid, NF_GLOBAL, "model_output_valid_time", 19, trim(nlst_rt(1)%olddate))
+Routing/module_HYDRO_io.F:     iret = nf90_create(trim(nlst_rt(did)%hydrotbl_f), OR(NF90_CLOBBER, NF90_NETCDF4), ncid)
+Routing/module_HYDRO_io.F:   call read2dlsm(did,trim(nlst_rt(did)%hydrotbl_f),"SMCMAX1",rt_domain(did)%SMCMAX1)
+Routing/module_HYDRO_io.F:   call read2dlsm(did,trim(nlst_rt(did)%hydrotbl_f),"SMCREF1",rt_domain(did)%SMCREF1)
+Routing/module_HYDRO_io.F:   call read2dlsm(did,trim(nlst_rt(did)%hydrotbl_f),"SMCWLT1",rt_domain(did)%SMCWLT1)
+Routing/module_HYDRO_io.F:   call read2dlsm(did,trim(nlst_rt(did)%hydrotbl_f),"OV_ROUGH2D",rt_domain(did)%OV_ROUGH2D)
+Routing/module_HYDRO_io.F:   call read2dlsm(did,trim(nlst_rt(did)%hydrotbl_f),"LKSAT",rt_domain(did)%LKSAT)
+Routing/module_HYDRO_io.F:use module_namelist, only: nlst_rt
+Routing/module_HYDRO_io.F:   !!if(nlst_rt(did)%OVRTSWCRT .eq. 1) then
+Routing/module_HYDRO_io.F:   if(nlst_rt(1)%ovrtswcrt .ne. ovrtswcrt_in) &
+Routing/module_HYDRO_io.F:   if(nlst_rt(1)%dt .ne. noah_timestep_in) &
+Routing/module_HYDRO_io.F:   !if( (nlst_rt(did)%channel_only .eq. 0 .and. nlst_rt(did)%channelBucket_only .eq. 0) .and. &
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%channel_only .eq. 1 .and. channelBucket_only_in .eq. 1) &
+Routing/module_HYDRO_io.F:if(nlst_rt(did)%channel_only       .eq. 1 .or. &
+Routing/module_HYDRO_io.F:   nlst_rt(did)%channelBucket_only .eq. 1      ) then
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%channel_only .eq. 1) then
+Routing/module_HYDRO_io.F:   if(nlst_rt(did)%channelBucket_only .eq. 1) then
+Routing/module_HYDRO_io.F:           real( (accBucket_in - rt_domain(did)%accBucket)/nlst_rt(did)%DT )
+Routing/module_HYDRO_io.F:                 (accSfcLatRunoff_in - rt_domain(did)%accSfcLatRunoff)/nlst_rt(did)%DT )
+Routing/module_HYDRO_io.F:           rt_domain(did)%QLateral      = real( (accSfcLatRunoff_in)/nlst_rt(did)%DT )
+Routing/module_HYDRO_io.F:           rt_domain(did)%qout_gwsubbas = real( (accBucket_in)/nlst_rt(did)%DT )
+Routing/module_HYDRO_utils.F:  use module_namelist, only: nlst_rt
+Routing/module_HYDRO_utils.F:                     trim(nlst_rt(did)%GEO_FINEGRID_FLNM ))
+Routing/module_HYDRO_utils.F:                     trim(nlst_rt(did)%GEO_FINEGRID_FLNM ))
+Routing/module_HYDRO_utils.F:                     trim(nlst_rt(did)%GEO_FINEGRID_FLNM ))
+Routing/module_HYDRO_utils.F:                     trim(nlst_rt(did)%GEO_FINEGRID_FLNM ))
+Routing/module_HYDRO_utils.F:     if(nlst_rt(did)%dxrt0 .lt. 0) then
+Routing/module_HYDRO_utils.F:                 nlst_rt(did)%dxrt0*nlst_rt(did)%AGGFACTRT,nlst_rt(did)%dxrt0*nlst_rt(did)%AGGFACTRT)
+Routing/module_HYDRO_utils.F:     if(nlst_rt(did)%dxrt0 .lt. 0) then
+Routing/module_HYDRO_utils.F:              nlst_rt(did)%dxrt0*nlst_rt(did)%AGGFACTRT,nlst_rt(did)%dxrt0*nlst_rt(did)%AGGFACTRT)
+Routing/module_HYDRO_utils.F:     if(nlst_rt(did)%dxrt0 .lt. 0) then
+Routing/module_HYDRO_utils.F:              nlst_rt(did)%dxrt0,nlst_rt(did)%dxrt0)
+Routing/module_HYDRO_utils.F:!     if(nlst_rt(did)%dxrt0 .lt. 0) then
+Routing/module_HYDRO_utils.F:!              nlst_rt(did)%dxrt0,nlst_rt(did)%dxrt0)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io_dict.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io_dict.F:   use module_namelist, only : nlst_rt
+Routing/module_NWM_io_dict.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnMeta)
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%CHRTOUT_DOMAIN .eq. 0) then
+Routing/module_NWM_io.F:   if (nlst_rt(1)%io_config_outputs .eq. 0) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 1) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 2) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 3) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 4) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 5) then
+Routing/module_NWM_io.F:   else if (nlst_rt(1)%io_config_outputs .eq. 6) then
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%UDMP_OPT .eq. 1) then
+Routing/module_NWM_io.F:            if(nlst_rt(domainId)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_NWM_io.F:               nlst_rt(domainId)%output_channelBucket_influx .eq. 2) then
+Routing/module_NWM_io.F:            if(nlst_rt(domainId)%output_channelBucket_influx .eq. 2 .and. &
+Routing/module_NWM_io.F:               nlst_rt(domainId)%channel_only                .eq. 0         ) then
+Routing/module_NWM_io.F:            if(nlst_rt(domainId)%output_channelBucket_influx .eq. 3) then
+Routing/module_NWM_io.F:            if(nlst_rt(domainId)%output_channelBucket_influx .ne. 0) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%output_channelBucket_influx .ne. 0) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%UDMP_OPT .eq. 1) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_NWM_io.F:            nlst_rt(domainId)%output_channelBucket_influx .eq. 2) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%output_channelBucket_influx .eq. 2) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%output_channelBucket_influx .eq. 3) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%output_channelBucket_influx .ne. 0) then
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt 
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm, '(A12,".CHRTOUT_DOMAIN",I1)')nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16), nlst_rt(domainId)%igrid
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:         iret = nf90_open(trim(nlst_rt(1)%route_link_f),NF90_NOWRITE,ncid=ftnRt)
+Routing/module_NWM_io.F:      where(g_orderOut .ge. nlst_rt(domainId)%order_to_write) g_outInd = 1
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_OVRTSWCRT",nlst_rt(domainId)%OVRTSWCRT)
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_NOAH_TIMESTEP",int(nlst_rt(domainId)%dt))
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_channel_only",nlst_rt(domainId)%channel_only)
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_channelBucket_only",nlst_rt(domainId)%channelBucket_only)
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   startDateTmp = trim(nlst_rt(1)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(6:7)//&
+Routing/module_NWM_io.F:                       &"-"//nlst_rt(1)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(itime * nlst_rt(1)%dt / 60) 
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(1)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(1)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 3600 / output_timestep ) * output_timestep / 60
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 3600 / output_timestep )  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   if(nlst_rt(1)%io_config_outputs .eq. 0) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 1) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 2) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 3) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 4) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 5) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 6) then
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:         if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then 
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:         iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io.F:         if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%RTOUT_DOMAIN .eq. 0) then
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%io_config_outputs .eq. 0) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 1) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 2) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 3) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 4) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 5) then
+Routing/module_NWM_io.F:   else if(nlst_rt(domainId)%io_config_outputs .eq. 6) then
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt 
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm, '(A12,".RTOUT_DOMAIN",I1)') nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(6:7)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(15:16), igrid
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:      iret = nf90_open(trim(nlst_rt(domainId)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:               if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%outlake .eq. 0) then
+Routing/module_NWM_io.F:   if(nlst_rt(1)%io_config_outputs .eq. 0) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 1) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 2) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 3) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 4) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 5) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 6) then
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt 
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm, '(A12,".LAKEOUT_DOMAIN",I1)')nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16),nlst_rt(domainId)%igrid
+Routing/module_NWM_io.F:      iret = nf90_open(trim(nlst_rt(1)%route_lake_f),NF90_NOWRITE,ncid=ftnRt)
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then 
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%CHRTOUT_GRID .eq. 1) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%CHRTOUT_GRID .eq. 0) then
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt 
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm, '(A12,".CHRTOUT_GRID",I1)') nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(6:7)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:                       nlst_rt(domainId)%olddate(15:16), igrid
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:      iret = nf90_open(trim(nlst_rt(domainId)%geo_finegrid_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%LSMOUT_DOMAIN .eq. 0) then
+Routing/module_NWM_io.F:   startDateTmp = trim(nlst_rt(1)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(6:7)//&
+Routing/module_NWM_io.F:                       &"-"//nlst_rt(1)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                       nlst_rt(1)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(1)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(1)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(1)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(1)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:      write(output_flnm,'(A12,".LSMOUT_DOMAIN",I1)') nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:            nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:            nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16)//  &
+Routing/module_NWM_io.F:            nlst_rt(domainId)%hgrid
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:      iret = nf90_open(trim(nlst_rt(1)%land_spatial_meta_flnm),NF90_NOWRITE,ncid=ftnGeo)
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%frxst_pts_out .eq. 0) then
+Routing/module_NWM_io.F:   seconds_since = int(nlst_rt(1)%out_dt*60*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:         if(nlst_rt(domainId)%channel_option .eq. 3) then 
+Routing/module_NWM_io.F:            write(55,117) seconds_since, nlst_rt(domainId)%olddate(1:18),&
+Routing/module_NWM_io.F:                          nlst_rt(domainId)%olddate(12:19),&
+Routing/module_NWM_io.F:            write(55,117) seconds_since, nlst_rt(domainId)%olddate(1:18),&
+Routing/module_NWM_io.F:                          nlst_rt(domainId)%olddate(12:19),&
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%CHANOBS_DOMAIN .eq. 0) then
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm,'(A12,".CHANOBS_DOMAIN",I1)')nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16),&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%igrid
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .ne. 3) then
+Routing/module_NWM_io.F:     modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_OVRTSWCRT",nlst_rt(domainId)%OVRTSWCRT)
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_NOAH_TIMESTEP",int(nlst_rt(domainId)%dt))
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_channel_only",nlst_rt(domainId)%channel_only)
+Routing/module_NWM_io.F:      iret = nf90_put_att(ftn,NF90_GLOBAL,"dev_channelBucket_only",nlst_rt(domainId)%channelBucket_only)
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then 
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%channel_option .eq. 3) then
+Routing/module_NWM_io.F:   use module_namelist, only: nlst_rt
+Routing/module_NWM_io.F:   if(nlst_rt(domainId)%output_gw .eq. 0) then
+Routing/module_NWM_io.F:   if(nlst_rt(1)%io_config_outputs .eq. 0) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 1) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 2) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 3) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 4) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 5) then
+Routing/module_NWM_io.F:   else if(nlst_rt(1)%io_config_outputs .eq. 6) then
+Routing/module_NWM_io.F:   modelConfigType = GetModelConfigType(nlst_rt(1)%io_config_outputs)
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%UDMP_OPT .eq. 1) then
+Routing/module_NWM_io.F:         call ReachLS_write_io(rt_domain(domainId)%qin_gwsubbas/nlst_rt(domainId)%DT,g_qin_gwsubbas)
+Routing/module_NWM_io.F:      g_qin_gwsubbas = rt_domain(domainId)%qin_gwsubbas/nlst_rt(domainId)%DT
+Routing/module_NWM_io.F:      if(nlst_rt(domainId)%UDMP_OPT .eq. 1) g_z_gwsubbas = g_z_gwsubbas * 1000.
+Routing/module_NWM_io.F:   startDate = trim(nlst_rt(domainId)%startdate(1:4)//"-"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(6:7)//&
+Routing/module_NWM_io.F:                    &"-"//nlst_rt(domainId)%startdate(9:10)//" "//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(12:13)//":"//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%startdate(15:16))
+Routing/module_NWM_io.F:   minSinceSim = int(nlst_rt(1)%out_dt*(rt_domain(1)%out_counts-1))
+Routing/module_NWM_io.F:   validTime = trim(nlst_rt(domainId)%olddate(1:4)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(6:7)//'-'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(9:10)//'_'//&
+Routing/module_NWM_io.F:                    nlst_rt(domainId)%olddate(12:13)//&
+Routing/module_NWM_io.F:   initTime = trim(nlst_rt(domainId)%startdate(1:4)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(6:7)//'-'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(9:10)//'_'//&
+Routing/module_NWM_io.F:                  nlst_rt(domainId)%startdate(12:13)//&
+Routing/module_NWM_io.F:   fileMeta%timeValidMin = minSinceEpoch1 + nlst_rt(1)%out_dt 
+Routing/module_NWM_io.F:   fileMeta%timeValidMax = minSinceEpoch1 + int(nlst_rt(1)%khour * 60/nlst_rt(1)%out_dt) * nlst_rt(1)%out_dt
+Routing/module_NWM_io.F:   fileMeta%totalValidTime = int(nlst_rt(1)%khour * 60 / nlst_rt(1)%out_dt)  ! # number of valid time (#of output files)
+Routing/module_NWM_io.F:   write(output_flnm,'(A12,".GWOUT_DOMAIN",I1)')nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_NWM_io.F:         nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16),nlst_rt(domainId)%igrid
+Routing/module_NWM_io.F:      if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then 
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 3)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:            if((nlst_rt(1)%io_form_outputs .eq. 1) .or. (nlst_rt(1)%io_form_outputs .eq. 2)) then
+Routing/module_NWM_io.F:   use module_namelist, only : nlst_rt
+Routing/module_NWM_io.F:   iret = nf90_open(trim(nlst_rt(1)%route_link_f),NF90_NOWRITE,ncid=ftnRt)
+Routing/module_reservoir_routing.F:   use module_namelist, only: nlst_rt
+Routing/module_reservoir_routing.F:   if(nlst_rt(domainId)%reservoir_data_ingest .eq. 0) then
+Routing/module_reservoir_routing.F:      write(inFlnm,'(A,"/LAKEFILE_DISCHARGE_",A12,".nc")') nlst_rt(domainId)%reservoir_obs_dir,nlst_rt(domainId)%olddate(1:4)//&
+Routing/module_reservoir_routing.F:            nlst_rt(domainId)%olddate(6:7)//nlst_rt(domainId)%olddate(9:10)//&
+Routing/module_reservoir_routing.F:            nlst_rt(domainId)%olddate(12:13)//nlst_rt(domainId)%olddate(15:16)
+Routing/module_RT.F:!     if( nlst_rt(did)%channel_option .eq. 1  .or. nlst_rt(did)%channel_option .eq. 2 ) then
+Routing/module_RT.F:  if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_RT.F:  if(nlst_rt(did)%channel_only       .eq. 0 .and. & 
+Routing/module_RT.F:     nlst_rt(did)%channelBucket_only .eq. 0        ) then
+Routing/module_RT.F:     if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_RT.F:  if(nlst_rt(did)%channel_only       .eq. 0) then
+Routing/module_RT.F:!tmp  if( nlst_rt(did)%channel_option .eq. 1  .or. nlst_rt(did)%channel_option .eq. 3 ) then
+Routing/module_RT.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_RT.F:           nlst_rt(did)%output_channelBucket_influx .eq. 2      ) then        
+Routing/module_RT.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 1 .or. &
+Routing/module_RT.F:           nlst_rt(did)%output_channelBucket_influx .eq. 3      ) &
+Routing/module_RT.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 2) then
+Routing/module_RT.F:        if(nlst_rt(did)%output_channelBucket_influx .eq. 3) then        
+Routing/module_RT.F:  if( nlst_rt(did)%channel_option .eq. 1  .or. nlst_rt(did)%channel_option .eq. 2 ) then
+Routing/module_RT.F:use module_namelist, only:  nlst_rt 
+Routing/module_RT.F:if(nlst_rt(did)%rtFlag .eq. 0) return
+Routing/module_RT.F:if(nlst_rt(did)%channel_only       .eq. 1 .or. & 
+Routing/module_RT.F:   nlst_rt(did)%channelBucket_only .eq. 1        ) then
+Routing/module_RT.F:      call get_NLINKSL(rt_domain(did)%NLINKSL, nlst_rt(did)%channel_option, nlst_rt(did)%route_link_f)
+Routing/module_RT.F:   if(nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) then
+Routing/module_RT.F:   if(nlst_rt(did)%UDMP_OPT .eq. 1 .or. nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) &
+Routing/module_RT.F:        call read_NSIMLAKES(rt_domain(did)%NLAKES,nlst_rt(did)%route_lake_f)
+Routing/module_RT.F:        rt_domain(did)%ixrt,rt_domain(did)%jxrt, nlst_rt(did)%nsoil,nlst_rt(did)%CHANRTSWCRT)
+Routing/module_RT.F:if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT .eq. 2) then  !IF/then for channel routing
+Routing/module_RT.F:              IXRT, JXRT, nlst_rt(did)%route_chan_f, nlst_rt(did)%route_link_f, &
+Routing/module_RT.F:              nlst_rt(did)%route_direction_f, &
+Routing/module_RT.F:              CH_NETLNK, nlst_rt(did)%channel_option, nlst_rt(did)%geo_finegrid_flnm, &
+Routing/module_RT.F:              rt_domain(did)%NLINKSL, nlst_rt(did)%udmp_opt , rt_domain(did)%nlakes)
+Routing/module_RT.F:   call get_NLINKSL(rt_domain(did)%NLINKSL, nlst_rt(did)%channel_option, nlst_rt(did)%route_link_f)
+Routing/module_RT.F:   if(nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) then
+Routing/module_RT.F:if(nlst_rt(did)%UDMP_OPT .eq. 1 .or. nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) then
+Routing/module_RT.F:   call read_NSIMLAKES(rt_domain(did)%NLAKES,nlst_rt(did)%route_lake_f)
+Routing/module_RT.F:     rt_domain(did)%ixrt,rt_domain(did)%jxrt, nlst_rt(did)%nsoil,nlst_rt(did)%CHANRTSWCRT)
+Routing/module_RT.F:if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT .eq. 2) then  !IF/then for channel routing
+Routing/module_RT.F:use module_namelist, only:  nlst_rt
+Routing/module_RT.F:if(nlst_rt(did)%rtFlag .eq. 0) return
+Routing/module_RT.F:if (nlst_rt(did)%SUBRTSWCRT  .eq.1 .or. &
+Routing/module_RT.F:    nlst_rt(did)%OVRTSWCRT   .eq.1 .or. &
+Routing/module_RT.F:    nlst_rt(did)%GWBASESWCRT .ne. 0) then
+Routing/module_RT.F:   if(nlst_rt(did)%channel_only       .eq. 0 .and. & 
+Routing/module_RT.F:      nlst_rt(did)%channelBucket_only .eq. 0        ) then
+Routing/module_RT.F:           rt_domain(did)%LKSATFAC,trim(nlst_rt(did)%route_topo_f),&
+Routing/module_RT.F:           nlst_rt(did)%route_chan_f,nlst_rt(did)%geo_finegrid_flnm  ,  &
+Routing/module_RT.F:           nlst_rt(did)%channel_option, nlst_rt(did)%udmp_opt)
+Routing/module_RT.F:      if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT .eq. 2) then  !IF/then for channel routing
+Routing/module_RT.F:             rt_domain(did)%CHLON,        nlst_rt(did)%channel_option,    &
+Routing/module_RT.F:             rt_domain(did)%STRMFRXSTPTS, nlst_rt(did)%geo_finegrid_flnm, &
+Routing/module_RT.F:             nlst_rt(did)%route_lake_f, rt_domain(did)%LAKEIDM,nlst_rt(did)%UDMP_OPT   & !! no comma
+Routing/module_RT.F:   if((nlst_rt(did)%CHANRTSWCRT    .eq. 1 .or. nlst_rt(did)%CHANRTSWCRT    .eq. 2) .and. &
+Routing/module_RT.F:      (nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2)        ) then
+Routing/module_RT.F:           nlst_rt(did)%route_link_f,    nlst_rt(did)%route_lake_f, &
+Routing/module_RT.F:if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_RT.F:   if ((nlst_rt(did)%CHANRTSWCRT .eq. 1) .and. (nlst_rt(did)%channel_option .eq. 3)) then
+Routing/module_RT.F:   if(nlst_rt(did)%channel_only .eq. 0) then
+Routing/module_RT.F:      if(nlst_rt(did)%UDMP_OPT .eq. 1) then   
+Routing/module_RT.F:              nlst_rt(did)%OVRTSWCRT,  nlst_rt(did)%SUBRTSWCRT,  &
+Routing/module_RT.F:    if ( (nlst_rt(did)%CHANRTSWCRT .eq. 1) .and. &
+Routing/module_RT.F:         (nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) ) then
+Routing/module_RT.F:      if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_RT.F:   endif ! end of if (nlst_rt(did)%channel_option .eq. 1 .or. nlst_rt(did)%channel_option .eq. 2) 
+Routing/module_RT.F:end if ! end of if (nlst_rt(did)%SUBRTSWCRT  .eq.1 .or. &    nlst_rt(did)%OVRTSWCRT   .eq.1 .or. &
+Routing/module_RT.F:!            nlst_rt(did)%GWBASESWCRT .ne. 0) then
+Routing/module_RT.F:if(nlst_rt(did)%channel_only       .eq. 0 .and. & 
+Routing/module_RT.F:   nlst_rt(did)%channelBucket_only .eq. 0        ) then
+Routing/module_RT.F:         if (nlst_rt(did)%RT_OPTION.eq.2) then
+Routing/module_RT.F:         if (nlst_rt(did)%RT_OPTION.eq.1) then
+Routing/module_RT.F:if(nlst_rt(did)%UDMP_OPT .eq. 1) then
+Routing/module_RT.F:   if (nlst_rt(did)%GWBASESWCRT.ge.1) then
+Routing/module_RT.F:      call readBucket_nhd(trim(nlst_rt(did)%GWBUCKPARM_file), rt_domain(did)%numbasns, &
+Routing/module_RT.F:   if (nlst_rt(did)%GWBASESWCRT.ge.1) then
+Routing/module_RT.F:      if (nlst_rt(did)%GWBASESWCRT.eq.1.or.nlst_rt(did)%GWBASESWCRT.eq.2) then
+Routing/module_RT.F:         rt_domain(did)%JXRT,rt_domain(did)%GWSUBBASMSK,nlst_rt(did)%gwbasmskfil,&
+Routing/module_RT.F:         rt_domain(did)%gw_strm_msk,rt_domain(did)%numbasns,rt_domain(did)%overland%streams_and_lakes%ch_netrt,nlst_rt(did)%AGGFACTRT)
+Routing/module_RT.F:         call read_GWBUCKPARM(trim(nlst_rt(did)%GWBUCKPARM_file),rt_domain(did)%numbasns,   &
+Routing/module_RT.F:      elseif (nlst_rt(did)%GWBASESWCRT.ge.3) then
+Routing/module_RT.F:              gw2d(did)%ltype, nlst_rt(did)%gwIhShift)
+Routing/module_RT.F:      end if ! end if (nlst_rt(did)%GWBASESWCRT.eq.1.or.nlst_rt(did)%GWBASESWCRT.eq.2) 
+Routing/module_RT.F:   end if ! end if (nlst_rt(did)%GWBASESWCRT.ge.1)
+Routing/module_RT.F:if (nlst_rt(did)%CHANRTSWCRT.eq.1 .or. nlst_rt(did)%CHANRTSWCRT .eq. 2) then
+Routing/module_RT.F:   if (nlst_rt(did)%channel_option .eq. 3) then
+Routing/module_RT.F:   if (nlst_rt(did)%channel_option .ne. 3) then
+Routing/module_RT.F:if(nlst_rt(did)%channel_only       .eq. 0 .and. & 
+Routing/module_RT.F:   nlst_rt(did)%channelBucket_only .eq. 0        ) then
+Routing/module_RT.F:   rt_domain(did)%INFXSWGT = 1./(nlst_rt(did)%AGGFACTRT*nlst_rt(did)%AGGFACTRT)
+Routing/module_RT.F:   rt_domain(did)%SOLDEPRT = -1.0 * nlst_rt(did)%ZSOIL8(nlst_rt(did)%NSOIL)
+Routing/module_UDMAP.F:use module_namelist, only: nlst_rt
+Routing/module_UDMAP.F:        call get_dimension(trim(nlst_rt(did)%UDMAP_FILE), ndata, npid) 
+Routing/module_UDMAP.F:           call get1d_int(trim(nlst_rt(did)%UDMAP_FILE),"i_index",gbufi)
+Routing/module_UDMAP.F:           call get1d_int(trim(nlst_rt(did)%UDMAP_FILE),"j_index",gbufj)
+Routing/module_UDMAP.F:            call get1d_int(trim(nlst_rt(did)%route_link_f),"link",linkid)
+Routing/module_UDMAP.F:            call get1d_int(trim(nlst_rt(did)%UDMAP_FILE),"polyid",gbufid)
+Routing/module_UDMAP.F:          call get1d_int(trim(nlst_rt(did)%UDMAP_FILE),"overlaps",bufsize)
+Routing/module_UDMAP.F:          call get1d_real8(trim(nlst_rt(did)%UDMAP_FILE),"regridweight",gbufw)
+Routing/Noah_distr_routing.F:           use module_namelist, only: nlst_rt
+Routing/Noah_distr_routing.F:           call disaggregateDomain( RT_DOMAIN(did)%IX,RT_DOMAIN(did)%JX,nlst_rt(did)%NSOIL,&
+Routing/Noah_distr_routing.F:             RT_DOMAIN(did)%IXRT,RT_DOMAIN(did)%JXRT,nlst_rt(did)%AGGFACTRT,RT_DOMAIN(did)%SICE, &
+Routing/Noah_distr_routing.F:             use module_namelist, only: nlst_rt
+Routing/Noah_distr_routing.F:             IF (nlst_rt(did)%SUBRTSWCRT.EQ.1) THEN
+Routing/Noah_distr_routing.F:                call subsurfaceRouting (RT_DOMAIN(did)%ixrt, RT_DOMAIN(did)%jxrt , nlst_rt(did)%nsoil, &
+Routing/Noah_distr_routing.F:                     nlst_rt(did)%DT,RT_DOMAIN(did)%ZWATTABLRT,rt_domain(did)%overland%properties%surface_slope_x,       &
+Routing/Noah_distr_routing.F:                     RT_DOMAIN(did)%QSUBRT ,nlst_rt(did)%rt_option, rt_domain(did)%overland%properties%distance_to_neighbor, &
+Routing/Noah_distr_routing.F:             use module_namelist, only: nlst_rt
+Routing/Noah_distr_routing.F:             if(nlst_rt(did)%OVRTSWCRT .eq. 1) then
+Routing/Noah_distr_routing.F:                 !call OverlandRouting (nlst_rt(did)%DT, nlst_rt(did)%DTRT_TER, nlst_rt(did)%rt_option, &
+Routing/Noah_distr_routing.F:                          nlst_rt(did)%DT, &
+Routing/Noah_distr_routing.F:                          nlst_rt(did)%DTRT_TER, &
+Routing/Noah_distr_routing.F:                          nlst_rt(did)%rt_option, &

@@ -355,13 +355,13 @@ CONTAINS
 #endif
     if(nlst%DT .lt. DTRT_CH) then 
           print*, "nlst%DT,  DTRT_CH = ",nlst%DT,  DTRT_CH
-          print*, "reset DTRT_CH=nlst%DT "
           DTRT_CH=nlst%DT
+          print*, "reset DTRT_CH=nlst%DT ", DTRT_CH
     endif
     if(nlst%DT .lt. DTRT_TER) then 
           print*, "nlst%DT,  DTRT_TER = ",nlst%DT,  DTRT_TER
-          print*, "reset DTRT_TER=nlst%DT "
           DTRT_TER=nlst%DT
+          print*, "reset DTRT_TER=nlst%DT ", DTRT_TER
     endif
     !if(nlst%DT/DTRT_TER .ne. real(int(nlst%DT) / int(DTRT_TER)) ) then 
          !print*, "nlst%DT,  DTRT_TER = ",nlst%DT,  DTRT_TER
