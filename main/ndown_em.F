@@ -317,6 +317,9 @@ real :: cf1_c,cf2_c,cf3_c,cfn_c,cfn1_c
    CALL geth_idts ( end_date_char , start_date_char , total_time_sec )
 
    new_bdy_frq = model_config_rec%interval_seconds
+
+   print *, "jss interval_seconds",new_bdy_frq
+
    time_loop_max = total_time_sec / model_config_rec%interval_seconds + 1
 
    start_date        = start_date_char // '.0000'
@@ -802,11 +805,15 @@ nested_grid%chem_in_opt = parent_grid%chem_in_opt
          !  We need to save the 3d/2d data to compute a difference during the next loop.  Couple the
          !  3d fields with total mu (mub + mu_2) and the stagger-specific map scale factor.
 
+		print *, "ubdy3dtemp1 check 1", nested_grid%u_bxe(2,2,2),ubdy3dtemp1(2,2,2),nested_grid%msfuy(2,2)
+		print *, nested_grid%mu_2(2,2), nested_grid%mub(2,2)
          ! u, theta, h, scalars coupled with my, v coupled with mx
          CALL couple ( nested_grid%mu_2 , nested_grid%mub , ubdy3dtemp1 , nested_grid%u_2                 , &
                        'u' , nested_grid%msfuy , &
                        nested_grid%c1h, nested_grid%c2h, nested_grid%c1f, nested_grid%c2f, &
                        ids, ide, jds, jde, kds, kde, ims, ime, jms, jme, kms, kme, ips, ipe, jps, jpe, kps, kpe )
+		print *, "ubdy3dtemp1 check 2", nested_grid%u_bxe(2,2,2),ubdy3dtemp1(2,2,2),nested_grid%msfuy(2,2)
+		print *, nested_grid%mu_2(2,2), nested_grid%mub(2,2)
          CALL couple ( nested_grid%mu_2 , nested_grid%mub , vbdy3dtemp1 , nested_grid%v_2                 , &
                        'v' , nested_grid%msfvx , &
                        nested_grid%c1h, nested_grid%c2h, nested_grid%c1f, nested_grid%c2f, &
@@ -843,12 +850,16 @@ nested_grid%chem_in_opt = parent_grid%chem_in_opt
          !  There are 2 components to the lateral boundaries.  First, there is the starting
          !  point of this time period - just the outer few rows and columns.
 
+		print *, "u_bxe check 1", nested_grid%u_bxe(2,2,2),ubdy3dtemp1(2,2,2)
+
          CALL stuff_bdy     ( ubdy3dtemp1 , nested_grid%u_bxs, nested_grid%u_bxe,                        &
                                             nested_grid%u_bys, nested_grid%u_bye,                        &
                                                                      'U' ,               spec_bdy_width      , &
                                                                            ids , ide , jds , jde , kds , kde , &
                                                                            ims , ime , jms , jme , kms , kme , &
                                                                            ips , ipe , jps , jpe , kps , kpe )
+
+		print *, "u_bxe check 2", nested_grid%u_bxe(2,2,2),ubdy3dtemp1(2,2,2)
          CALL stuff_bdy     ( vbdy3dtemp1 , nested_grid%v_bxs, nested_grid%v_bxe,                        &
                                             nested_grid%v_bys, nested_grid%v_bye,                        &
                                                                      'V' ,               spec_bdy_width      , &
@@ -891,12 +902,15 @@ nested_grid%chem_in_opt = parent_grid%chem_in_opt
                                                                              ips , ipe , jps , jpe , kps , kpe )
          END DO
 
+		 
+		print *, "u_bxe check 3", nested_grid%u_bxe(2,2,2)
          CALL stuff_bdy     ( mbdy2dtemp1 , nested_grid%mu_bxs, nested_grid%mu_bxe,                      &
                                             nested_grid%mu_bys, nested_grid%mu_bye,                      &
                                                                      'M' ,               spec_bdy_width      , &
                                                                            ids , ide , jds , jde , 1 , 1 , &
                                                                            ims , ime , jms , jme , 1 , 1 , &
                                                                            ips , ipe , jps , jpe , 1 , 1 )
+		print *, "u_bxe check 4", nested_grid%u_bxe(2,2,2)
 #if ( WRF_CHEM == 1 )
          do nvchem=1,num_chem
 !        if(nvchem.eq.p_o3)then
@@ -1127,6 +1141,7 @@ print *,'bdy time = ',time_loop-1,'  bdy date = ',current_date,' ',start_date
          !  There are 2 components to the lateral boundaries.  First, there is the starting
          !  point of this time period - just the outer few rows and columns.
 
+		print *, "u_bxe check 5", nested_grid%u_bxe(2,2,2)
          CALL stuff_bdy     ( ubdy3dtemp1 , &
                               nested_grid%u_bxs, nested_grid%u_bxe     ,                   &
                               nested_grid%u_bys, nested_grid%u_bye     ,                   &
@@ -1134,6 +1149,7 @@ print *,'bdy time = ',time_loop-1,'  bdy date = ',current_date,' ',start_date
                                                                            ids , ide , jds , jde , kds , kde , &
                                                                            ims , ime , jms , jme , kms , kme , &
                                                                            ips , ipe , jps , jpe , kps , kpe )
+		print *, "u_bxe check 6", nested_grid%u_bxe(2,2,2)
          CALL stuff_bdy     ( vbdy3dtemp1 , &
                               nested_grid%v_bxs, nested_grid%v_bxe     ,                   &
                               nested_grid%v_bys, nested_grid%v_bye     ,                   &
@@ -1203,6 +1219,7 @@ print *,'bdy time = ',time_loop-1,'  bdy date = ',current_date,' ',start_date
 !        endif
          enddo
 #endif
+		print *, "u_bxe check 6", nested_grid%u_bxe(2,2,2)
          CALL stuff_bdy     ( mbdy2dtemp1 , &
                               nested_grid%mu_bxs, nested_grid%mu_bxe    ,  &
                               nested_grid%mu_bys, nested_grid%mu_bye    ,  &
@@ -1211,6 +1228,7 @@ print *,'bdy time = ',time_loop-1,'  bdy date = ',current_date,' ',start_date
                                                                            ims , ime , jms , jme , 1 , 1 , &
                                                                            ips , ipe , jps , jpe , 1 , 1 )
 
+		print *, "u_bxe check 7", nested_grid%u_bxe(2,2,2)
       ELSE IF ( time_loop .EQ. time_loop_max ) THEN
 
          ! u, theta, h, scalars coupled with my, v coupled with mx
