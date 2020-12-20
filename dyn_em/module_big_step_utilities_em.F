@@ -577,8 +577,6 @@ SUBROUTINE couple ( mu, mub, rfield, field, name, &
       ENDDO
       ENDDO
       ENDDO
-	  print *, "jss mu check 1", mu(2,2), mub(2,2), muu(2,2), muv(2,2)
-	  print *, rfield(2,2,2), field(2,2,2), c1h(2), c2h(2), msf(2,2)
 
    ELSE IF (name .EQ. 'v')THEN
 
