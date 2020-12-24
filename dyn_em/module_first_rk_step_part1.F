@@ -905,7 +905,7 @@ BENCH_START(surf_driver_tim)
 
 #ifdef WRF_HYDRO
         !if(HYDRO_dt .gt. 1 ) call wrf_drv_HYDRO(HYDRO_dt, grid,  &
-        if ( (HYDRO_dt .gt. 0.001 ).and.(int(grid%XTIME*60.0).eq.(grid%XTIME*60.0)) )  then
+        if ( (HYDRO_dt .gt. 0.001 ).and.( abs( nint(grid%XTIME*60.0)-(grid%XTIME*60.0)).lt.0.2  ) )  then
 			call wrf_drv_HYDRO(HYDRO_dt, grid,  &
      &     grid%i_start(1),min(grid%i_end(1), ide-1),      &
      &     grid%j_start(1),min(grid%j_end(1), jde-1) )
